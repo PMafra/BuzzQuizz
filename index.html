@@ -11,6 +11,7 @@
     <title>BuzzQuizz</title>
 </head>
 <body>
+    <header>BuzzQuizz</header>
 
     <header class="top-bar">
         <h1 class="site-name">BuzzQuizz</h1>
@@ -48,9 +49,32 @@
 
     </main>
     <main class="quizz-creation">
+        <div class="basic-information">
+            <div class="header">Comece pelo começo</div>
+            <div class="information-box">
+                <input class="input" placeholder="Título do seu quizz" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Título do seu quizz'" />
+                <input class="input" placeholder="URL da imagem do seu quizz" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'URL da imagem do seu quizz'" />
+                <input class="input" placeholder="Quantidade de perguntas do quizz" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Quantidade de perguntas do quizz'" />
+                <input class="input" placeholder="Quantidade de níveis do quizz" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Quantidade de níveis do quizz'" />
+            </div>
+            <button>Prosseguir pra criar perguntas</button>
+        </div>
+        <div class="questions"></div>
+        <div class="levels"></div>
+        <div class="quizz-done"></div>
+
+
 
     </main>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d286f58519b20ab9c751eda99286ba78a7a0a3a
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="scripts/scriptP.js"></script>
     <script src="scripts/scriptL.js"></script>
