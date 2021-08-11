@@ -27,6 +27,10 @@ body {
     z-index: 3;
 }
 
+.top-bar h1 {
+    cursor: pointer;
+}
+
 .quizz-list {
     margin-top: 69px;
     padding-bottom: 100px;
@@ -69,6 +73,7 @@ body {
 #add-icon {
     font-size: 40px;
     color: #EC362D;
+    cursor: pointer;
 }
 
 .quizz-list .quizzes-container 
@@ -108,12 +113,14 @@ body {
     font-size: 21px;
     stroke-dasharray: 10px;
     background-color: #ffffff;
+    cursor: pointer;
 }
 
 .quizz-list .quizzes-container 
 .quizz-box {
     position: relative;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .quizz-list .quizzes-container 
