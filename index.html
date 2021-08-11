@@ -19,32 +19,23 @@
 
     <main class="quizz-list">
 
-        <div class="quizzes-title-box">
+        <div class="quizzes-title-box hide">
             <span>Seus Quizzes</span>
             <ion-icon name="add-circle" id="add-icon"></ion-icon>
         </div>
 
-        <div class="quizzes-container">
-            <div class="quizz-layout quizz-create">
+        <div class="quizzes-container my-quizzes">
+
+            <div class="quizz-create">
                 <span>Você não criou nenhum quizz ainda :(</span>
-                <button id="create-button">Criar Quizz</button>
+                <button id="create-button" onclick="changePages(this)">Criar Quizz</button>
             </div>
             
-            <div class="quizz-layout quizz-box hide">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box hide">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box hide">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box hide">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
+            <div class="quizz-box hide" onclick="changePages(this)">
+                <img class="img-background" src="">
+                <div class="gradient-container">
+                    <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
+                </div>
             </div>
 
         </div>
@@ -52,31 +43,18 @@
         <div class="quizzes-title-box">
             <span>Todos os Quizzes</span>
         </div>
+ 
+        <div class="quizzes-container all-quizzes">
+            
 
-        <div class="quizzes-container">
-            <div class="quizz-layout quizz-box">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-            <div class="quizz-layout quizz-box">
-                
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
         </div>
 
     </main>
 
-    <main class="quizz-page">
+    <main class="quizz-page hide">
 
     </main>
+    
     <main class="quizz-creation hide">
         <div class="basic-information">
             <div class="header">Comece pelo começo</div>
@@ -100,7 +78,7 @@
 
     </main>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="scripts/scriptP.js"></script>
     <script src="scripts/scriptL.js"></script>
