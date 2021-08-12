@@ -90,7 +90,7 @@ function renderQuizzQuestions (response) {
                 for (let k = 0; k < response.data[i].questions[j].answers.length; k++) {
                     let questionPrinted = document.getElementById(`q${j}`);
                     questionPrinted.lastElementChild.innerHTML += 
-                        `<div class="answer-option">
+                        `<div class="answer-option" onclick="selectOption(this)">
                             <img src="${response.data[i].questions[j].answers[k].image}">
                             <span class="legend">${response.data[i].questions[j].answers[k].text}</span>
                         </div>`
@@ -99,3 +99,27 @@ function renderQuizzQuestions (response) {
         }    
     }
 }
+
+let siblings;
+function getSiblings (element) {
+
+    siblings = []; 
+    let sibling  = element.parentNode.firstChild;
+    while (sibling) {
+        if (sibling.nodeType === 1 && sibling !== element) {
+            siblings.push(sibling);
+        }
+        sibling = sibling.nextSibling;
+    }
+    return siblings;
+};
+
+function selectOption (element) {
+
+    getSiblings(element);
+
+    for (let i = 0; i < siblings.length; i++) {
+        siblings[i].classList.add("blurred-background");
+    }
+}
+
