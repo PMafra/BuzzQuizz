@@ -1,6 +1,3 @@
-* {
-    box-sizing: border-box;
-}
 body {
     background: #FAFAFA;
 }
@@ -20,29 +17,35 @@ header {
     left: 0;
 }
 
-.basic-information {
+/* CREATION GLOBAL */
+
+.basic-information, .questions {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.quizz-creation .basic-information .header {
-    margin: 140px 0 27px 0;
+.quizz-creation .header {
+    margin: 140px 0 0 0;
     font-size: 23px;
     font-weight: 700;
     display: flex;
     justify-content: center;
 }
-.quizz-creation .basic-information .information-box {
+.quizz-creation .information-box {
     width: 600px;
-    height: 256px;
     background: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 20px 16px 20px 16px;
+    padding: 24px 16px 24px 16px;
+    gap: 12px;
+    margin: 25px 0 25px 0;
 }
-.quizz-creation .basic-information .information-box .input {
+.quizz-creation .section-title {
+    font-weight: 700;
+    font-size: 20px;
+}
+.input {
     width: 564px;
     height: 46px;
     border: 1px solid #D1D1D1;
@@ -52,33 +55,45 @@ header {
     padding: 0 24px 0 24px;
     color: #000000;
 }
-.quizz-creation .basic-information .information-box .input::placeholder {
+.input::placeholder {
     color: #BABABA;
 }
-.quizz-creation .basic-information button {
+.quizz-creation button {
     width: 368.86px;
     height: 54px;
     background: #EC362D;
     border-radius: 15px;
-    margin: 85px 0 0 0;
+    margin: 85px 0 85px 0;
     font-size: 21px;
     color: #FFF5F4;;
     border: none;
     cursor: pointer;
 }
+.quizz-creation .closed {
+    flex-direction: row !important;
+    justify-content: space-between;
+    font-size: 23px;
+}
+/* BASIC INFO*/
+
+/* QUESTIONS */
+
+/* LEVELS */
+
+/* SUCCES */
 
 @media (max-width: 1100px) {
-    .quizz-creation .basic-information .header {
+    .quizz-creation .header {
         margin-top: 106px;
         font-size: 20px;
     }
-    .quizz-creation .basic-information .information-box {
+    .quizz-creation .information-box {
         width: 100%;
     }
-    .quizz-creation .basic-information .information-box .input {
+    .input {
         width: 100%;
     }
-    .quizz-creation .basic-information button {
+    .quizz-creation button {
         width: 324px;
         font-size: 18px;
     }
