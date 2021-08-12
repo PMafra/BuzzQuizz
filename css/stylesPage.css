@@ -114,6 +114,7 @@
 .question-container.quizz-result 
 .answer-option img {
     width: 340px;
+    height: 100%;
 }
 
 .question-container.quizz-result 
@@ -148,9 +149,12 @@
     opacity: 0.3;
 }
 
-.focused-background {
-    opacity: 1;
-    
+.color-green {
+    color: green;
+}
+
+.color-red {
+    color: red;
 }
 
 @media (min-width: 1100px) {

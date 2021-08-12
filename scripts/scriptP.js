@@ -27,7 +27,7 @@ function renderAllQuizzes (response) {
             <div class="gradient-container">
             </div>
             <p class="description">${response.data[i].title}</p>
-        </div>`
+        </div>`;
     }
 }
 
@@ -42,10 +42,12 @@ function changePages (element) {
         main.classList.add("hide");
         creation.classList.remove("hide");
     }
+    /*
     if (element.classList.contains("home-button")) {
         main.classList.remove("hide");
         page.classList.add("hide");
     }
+    */
     if (element.classList.contains("restart-button")) {
 
     }
@@ -59,9 +61,9 @@ function refreshPage () {
 }
 
 // QUIZZ PAGE
-
+let banner;
 function renderBanner (element) {
-    let banner = element.innerHTML;
+    banner = element.innerHTML;
     document.querySelector(".banner").innerHTML = banner;
 }
 
@@ -74,8 +76,11 @@ function getQuizz (element) {
     allQuizzes.catch(function (error) {console.log(error)});
 }
 
-function renderQuizzQuestions (response) {
+let questionsAnswered = 0;
+let totalQuestions = 0;
 
+function renderQuizzQuestions (response) {
+    console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
         if (quizzSrc === response.data[i].image) {
             for (let j = 0; j < response.data[i].questions.length; j++) {
@@ -86,21 +91,25 @@ function renderQuizzQuestions (response) {
                     </div>
                     <div class="answers-box">
                     </div>
-                </div>`
+                </div>`;
+            
                 for (let k = 0; k < response.data[i].questions[j].answers.length; k++) {
                     let questionPrinted = document.getElementById(`q${j}`);
                     questionPrinted.lastElementChild.innerHTML += 
-                        `<div class="answer-option" onclick="selectOption(this)">
+                        `<div class="answer-option" onclick="selectOption(this)" id="${response.data[i].questions[j].answers[k].isCorrectAnswer}">
                             <img src="${response.data[i].questions[j].answers[k].image}">
                             <span class="legend">${response.data[i].questions[j].answers[k].text}</span>
-                        </div>`
+                        </div>`;
                 }
+            questionsAnswered ++;
+            totalQuestions++;
             }      
         }    
     }
 }
 
 let siblings;
+let numOfHits = 0;
 function getSiblings (element) {
 
     siblings = []; 
@@ -115,11 +124,102 @@ function getSiblings (element) {
 };
 
 function selectOption (element) {
+    console.log(element.parentElement.nextElementSibling);
+    if (element.lastElementChild.classList.contains("color-green") || element.lastElementChild.classList.contains("color-red")) {
+        return;
+    }
 
     getSiblings(element);
 
     for (let i = 0; i < siblings.length; i++) {
         siblings[i].classList.add("blurred-background");
+        if (siblings[i].id === "true") {
+            siblings[i].lastElementChild.classList.add("color-green");
+        } else {
+            siblings[i].lastElementChild.classList.add("color-red");
+        }
+    }
+
+    if (element.id === "true") {
+        element.lastElementChild.classList.add("color-green");
+        numOfHits++;
+    } else {
+        element.lastElementChild.classList.add("color-red");
+    }
+    
+    questionsAnswered--;
+
+    console.log(numOfHits);
+
+    isFinished(questionsAnswered);
+
+    setTimeout(scrollToNext, 2000, element);   
+
+}
+
+function isFinished (remainingQuestions) {
+
+    console.log(remainingQuestions);
+
+    if (remainingQuestions === 0) {
+
+        let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+        allQuizzes.then(renderResult);
+        allQuizzes.catch(function (error) {console.log(error)});       
+    }
+
+}
+
+function renderResult(response) {
+    let x = document.querySelector(".banner .description").innerHTML;
+    console.log(x);
+    let result;
+    
+    for (let i = 0; i < response.data.length; i++) {
+        if (response.data[i].title === x){
+            for (let j = 0; j < response.data[i].levels.length; j++) {
+                console.log(Math.round((numOfHits/totalQuestions)*100));
+                if (Math.round((numOfHits/totalQuestions)*100) >= response.data[i].levels[j].minValue) {
+                    result = 
+                        `<div class="quizz-result question-container">
+                            <div class="question-box">
+                                <span class="question">${response.data[i].levels[j].title}</span>
+                            </div>
+                            <div class="answer-option">
+                                <img src="${response.data[i].levels[j].image}">
+                                <span class="legend">${response.data[i].levels[j].text}</span>
+                            </div>
+                        </div>
+                        <button class="restart-button" onclick="changePages(this)">Reiniciar Quizz</button>
+                        <button class="home-button" onclick="refreshPage()">Voltar para home</button>`;
+                }           
+            }
+            page.innerHTML += result;        
+        }
     }
 }
+
+function scrollToNext (element) {
+    let scrollNextOne = element.parentElement.parentElement.nextElementSibling;
+    let scrollResult = document.querySelector(".quizz-result");
+    if (scrollNextOne !== null) {
+        scrollNextOne.scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        });
+    } else {
+        scrollResult.scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        });
+    }
+}
+
+
+
+
+
+
 
