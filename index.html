@@ -29,7 +29,7 @@
                 <button id="create-button" onclick="changePages(this)">Criar Quizz</button>
             </div>
             
-            <div class="quizz-box" onclick="changePages(this); renderQuizzSelected(this)">
+            <div class="quizz-box hide" onclick="changePages(this); renderBanner(this)">
                 <img class="img-background" src="">
                 <div class="gradient-container">
                 </div>
@@ -53,36 +53,8 @@
 
         <div class="banner">
         </div>
-
-        <div class="question-container">
-
-            <div class="question-box">
-                <span class="question">Perguntafsadfsadfasdfasdfsadfasdfasdfas dsafasdfasdf asdfasdfsdaf </span>
-            </div>
-
-            <div class="answers-box">
-                <div class="answer-option">
-                    <img src="asdf">
-                    <span class="legend">Legenda</span>
-                </div>
-                <div class="answer-option">
-                    <img src="asd">
-                    <span class="legend">Legenda</span>
-                </div>
-                <div class="answer-option">
-                    <img src="ad">
-                    <span class="legend">Legenda</span>
-                </div>
-                <div class="answer-option">
-                    <img src="asd">
-                    <span class="legend">Legenda</span>
-                </div>
-                
-            </div>
-            
-        </div>
         
-        <div class="question-container">
+        <!-- <div class="question-container">
 
             <div class="question-box">
                 <span class="question">Pergunta</span>
@@ -104,9 +76,9 @@
             
             </div>
             
-        </div>
+        </div> -->
 
-        <div class="quizz-result question-container">
+        <div class="quizz-result question-container hide">
 
             <div class="question-box">
                 <span class="question">Resultado</span>
@@ -119,9 +91,9 @@
             
         </div>
 
-        <button class="restart-button" onclick="changePages(this)">Reiniciar Quizz</button>
+        <button class="restart-button hide" onclick="changePages(this)">Reiniciar Quizz</button>
 
-        <button class="home-button" onclick="changePages(this)">Voltar para home</button>
+        <button class="home-button hide" onclick="changePages(this)">Voltar para home</button>
 
 
     </div>
