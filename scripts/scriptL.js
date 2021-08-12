@@ -1,5 +1,27 @@
 const inputs = document.querySelectorAll(".input");
 
+function advanceCreation(element) {
+    // Aqui, criar variaveis do querySelector para diminuir código? 
+    if (element.classList.contains("information-button")) {
+        document.querySelector(".basic-information").classList.add("hide");
+        document.querySelector(".questions").classList.remove("hide");
+    }
+    if (element.classList.contains("questions-button")) {
+        document.querySelector(".questions").classList.add("hide");
+        document.querySelector(".levels").classList.remove("hide");
+    }
+    if (element.classList.contains("levels-button")) {
+        document.querySelector(".levels").classList.add("hide");
+        document.querySelector(".success").classList.remove("hide");
+    }
+    if (element.classList.contains("success-button")) {
+        document.querySelector(".success").classList.add("hide");
+    }
+    if (element.classList.contains("home-button")) {
+        document.querySelector(".success").classList.add("hide");
+        document.querySelector(".quizz-list").classList.remove("hide");
+    }
+}
 function isURL(str) {
     const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
