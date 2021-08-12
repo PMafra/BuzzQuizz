@@ -14,14 +14,14 @@
     <header>BuzzQuizz</header>
 
     <header class="top-bar">
-        <h1 class="site-name">BuzzQuizz</h1>
+        <h1 onclick="refreshPage()">BuzzQuizz</h1>
     </header>
 
     <main class="quizz-list hide">
 
-        <div class="quizzes-title-box hide">
+        <div class="quizzes-title-box">
             <span>Seus Quizzes</span>
-            <ion-icon name="add-circle" id="add-icon"></ion-icon>
+            <ion-icon name="add-circle" id="add-icon" onclick="changePages(this)"></ion-icon>
         </div>
 
         <div class="quizzes-container my-quizzes">

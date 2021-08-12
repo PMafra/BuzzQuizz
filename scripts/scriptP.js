@@ -35,7 +35,11 @@ function changePages (element) {
 
     if (element.classList.contains("quizz-box")) {
         page.classList.remove("hide");
-    } else if (element.parentElement.classList.contains("quizz-create")) {
+    } else if (element.parentElement.classList.contains("quizz-create") || element.id === "add-icon") {
         creation.classList.remove("hide");
     }
+}
+
+function refreshPage () {
+    location.reload();
 }
