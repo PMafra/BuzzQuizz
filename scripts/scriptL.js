@@ -8,14 +8,13 @@ function isURL(str) {
       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
-  }
+}
   function validarHexadecimal(str){
     if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
       return false
     }
     return true
   }
-
 function confirmInformation() {
     if (inputs[0].value.length < 20 || inputs[0].value.length > 65) {
         console.log("O nome do seu quizz deve ter de 20 a 65 caracteres");
@@ -25,11 +24,11 @@ function confirmInformation() {
         console.log("Tente outro link.");
         return;
     }
-    if (Number(inputs[2].value) < 3 || Number(inputs[2].value) / 1 !== Number(inputs[2].value)) {
+    if (Number(inputs[2].value) < 3 || Number(inputs[2].value) === NaN) {
         console.log("Seu quizz deve ter no mínimo 3 perguntas.");
         return;
     }
-    if (Number(inputs[3].value) < 2 || Number(inputs[3].value) / 1 !== Number(inputs[3].value)) {
+    if (Number(inputs[3].value) < 2 || Number(inputs[3].value) === NaN) {
         console.log("Seu quizz deve ter no mínimo 2 níveis.");
         return;
     }
@@ -39,7 +38,7 @@ function confirmInformation() {
     const neWinputs = document.querySelectorAll(".input");
     console.log(neWinputs);
     document.querySelector(".basic-information").classList.add("hide");
-    document.querySelector(".questions").classList.remove("hide");
+    document.querySelector(".levels").classList.remove("hide");
 }
 
 function printAmountOfQuestions() {
@@ -87,7 +86,6 @@ function printAmountOfQuestions() {
     }
     document.querySelector(".question.closed").classList.remove("closed");
 }
-
 function printAmountOfLevels() {
     const numberOfLevels = Number(inputs[3].value);
     const levels = document.querySelector(".levels .versatile-box");
@@ -99,13 +97,13 @@ function printAmountOfLevels() {
                 <ion-icon name="create-outline"></ion-icon>
                 <div class="opened">
                     <div class="divisor"></div>
-                    <input class="input" placeholder="Título do nível" onfocus="this.placeholder = ''"
+                    <input class="input title" placeholder="Título do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Título do nível'"/>
-                    <input class="input" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
+                    <input class="input percentage" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = '% de acerto mínima'"/>
-                    <input class="input" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
+                    <input class="input image" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta correta'"/>
-                    <input class="input" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
+                    <input class="input description" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Descrição do nível'"/>
                 </div>
             </div>
@@ -113,7 +111,6 @@ function printAmountOfLevels() {
     }
     document.querySelector(".level.closed").classList.remove("closed");
 }
-
 function openQuestion(element) {
     const questions = document.querySelectorAll(".quizz-creation .question");
     for (i = 0 ; i < questions.length ; i++) {
@@ -167,16 +164,47 @@ function confirmQuestions() {
     document.querySelector(".questions").classList.add("hide");
     document.querySelector(".levels").classList.remove("hide");
 }
+
 function confirmLevels() {
+    const Linputs = document.querySelectorAll(".levels .input");
+    for (i = 0 ; i < Linputs.length ; i++) {
+        if (Linputs[i].classList.contains("title")) {
+            if (Linputs[i].value.length < 10) {
+                console.log ("Título de nível deve ter no mínimo 10 caracteres.");
+                return;
+            }
+        }
+        if (Linputs[i].classList.contains("percentage")) {
+            if (Number(Linputs[i].value) < 0 || Number(Linputs[i].value) > 100
+            || Linputs[i].value === "") {
+                console.log ("Escolha valores entre 0 e 100 para a porcentagem de acerto.");
+                return;
+            }
+        }
+        if (Linputs[i].classList.contains("image")) {
+            if (!isURL(Linputs[i].value)) {
+                console.log ("Insira um URL válido.");
+                return;
+            }
+        }
+        if (Linputs[i].classList.contains("description")) {
+            if (Linputs[i].value.length < 30) {
+                console.log ("Descrição de nível deve ter no mínimo 30 caracteres.");
+                return;
+            }
+        }
+    }
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
 }
 function finishCreation(element) {
+    document.querySelector(".success").classList.add("hide");
+    document.querySelector(".basic-information").classList.remove("hide");
+    document.querySelector(".quizz-creation").classList.add("hide");
     if (element.classList.contains("home-button")) {
-        document.querySelector(".success").classList.add("hide");
         document.querySelector(".quizz-list").classList.remove("hide");
     }
     else {
-        document.querySelector(".success").classList.add("hide");
+        document.querySelector(".quizz-page").classList.remove("hide");
     }
 }
