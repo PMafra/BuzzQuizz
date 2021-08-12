@@ -29,6 +29,7 @@ function confirmInformation() {
     }
     console.log("Tudo certo!");
     printAmountOfQuestions();
+    printAmountOfLevels();
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
 }
@@ -78,6 +79,33 @@ function printAmountOfQuestions() {
     }
     document.querySelector(".question.closed").classList.remove("closed");
 }
+
+function printAmountOfLevels() {
+    const numberOfLevels = Number(inputs[3].value);
+    const levels = document.querySelector(".levels .versatile-box");
+    levels.innerHTML = "";
+    for (i = 0 ; i < numberOfLevels ; i++) {
+        levels.innerHTML += `
+            <div class="information-box level closed" onclick="openLevel(this)">
+                <div class="section-title">Nível ${i + 1}</div>
+                <ion-icon name="create-outline"></ion-icon>
+                <div class="opened">
+                    <div class="divisor"></div>
+                    <input class="input" placeholder="Título do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Título do nível'"/>
+                    <input class="input" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = '% de acerto mínima'"/>
+                    <input class="input" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Resposta correta'"/>
+                    <input class="input" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Descrição do nível'"/>
+                </div>
+            </div>
+        `;
+    }
+    document.querySelector(".level.closed").classList.remove("closed");
+}
+
 function openQuestion(element) {
     const questions = document.querySelectorAll(".quizz-creation .question");
     for (i = 0 ; i < questions.length ; i++) {
@@ -85,6 +113,19 @@ function openQuestion(element) {
     }
     element.classList.remove("closed");
 }
+function openLevel(element) {
+    const questions = document.querySelectorAll(".quizz-creation .level");
+    for (i = 0 ; i < questions.length ; i++) {
+        questions[i].classList.add("closed");
+    }
+    element.classList.remove("closed");
+}
 function confirmQuestions() {
+    document.querySelector(".questions").classList.add("hide");
+    document.querySelector(".levels").classList.remove("hide");
+}
+function confirmLevels() {
+    document.querySelector(".levels").classList.add("hide");
+    document.querySelector(".success").classList.remove("hide");
 }
 

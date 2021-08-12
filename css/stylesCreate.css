@@ -58,16 +58,14 @@ body {
     cursor: pointer;
 }
 
-/* BASIC INFO */
+/* QUESTIONS and LEVELS */
 
-/* QUESTIONS */
-
-.questions .information-box .opened {
+.quizz-creation .information-box .opened {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-.questions .information-box.closed .opened {
+.quizz-creation .information-box.closed .opened {
     display: none;
 }
 .quizz-creation .closed {
@@ -87,8 +85,6 @@ body {
 .quizz-creation .closed ion-icon {
     display: flex;
 }
-
-/* LEVELS */
 
 /* SUCCES */
 
