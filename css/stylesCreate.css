@@ -13,6 +13,7 @@ body {
     align-items: center;
     gap: 30px;
 }
+
 .quizz-creation .header {
     font-size: 23px;
     font-weight: 700;
@@ -56,14 +57,36 @@ body {
     border: none;
     cursor: pointer;
 }
+
+/* BASIC INFO */
+
+/* QUESTIONS */
+
+.questions .information-box .opened {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.questions .information-box.closed .opened {
+    display: none;
+}
 .quizz-creation .closed {
     flex-direction: row !important;
     justify-content: space-between;
     font-size: 23px;
+    cursor: pointer;
 }
-/* BASIC INFO*/
-
-/* QUESTIONS */
+.versatile-box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.quizz-creation ion-icon {
+    display: none;
+}
+.quizz-creation .closed ion-icon {
+    display: flex;
+}
 
 /* LEVELS */
 
@@ -114,6 +137,9 @@ body {
         font-size: 20px;
     }
     .quizz-creation .information-box {
+        width: 100%;
+    }
+    .versatile-box {
         width: 100%;
     }
     .input {

@@ -137,7 +137,7 @@
     <main class="quizz-creation hide">
         <div class="basic-information">
             <div class="header">Comece pelo começo</div>
-            <div class="information-box">
+            <div class="information-box opened">
                 <input class="input" placeholder="Título do seu quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Título do seu quizz'"/>
                 <input class="input" placeholder="URL da imagem do seu quizz" onfocus="this.placeholder = ''"
@@ -151,43 +151,8 @@
         </div>
         <div class="questions">
             <div class="header">Crie suas perguntas</div>
-            <div class="information-box">
-                <div class="section-title">Pergunta 1</div>
-                <div class="divisor"></div>
-                <input class="input" placeholder="Texto da pergunta" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Texto da pergunta'"/>
-                <input class="input" placeholder="Cor de fundo da pergunta" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Cor de fundo da pergunta'"/>
-                <div class="divider"></div>
-                <div class="section-title">Resposta correta</div>
-                <div class="divisor"></div>
-                <input class="input" placeholder="Resposta correta" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Resposta correta'"/>
-                <input class="input" placeholder="URL da imagem" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'URL da imagem'"/>
-                <div class="divider"></div>
-                <div class="section-title">Respostas incorretas</div>
-                <div class="divisor"></div>
-                <input class="input" placeholder="Resposta incorreta 1" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Resposta incorreta 1'"/>
-                <input class="input" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'URL da imagem 1'"/>
-                <div class="divider"></div>
-                <input class="input" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Resposta incorreta 2'"/>
-                <input class="input" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'URL da imagem 2'"/>
-                <div class="divider"></div>
-                <input class="input" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Resposta incorreta 3'"/>
-                <input class="input" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'URL da imagem 3'"/>
-            </div>
-            <div class="information-box closed">
-                <div class="section-title">Pergunta 2</div>
-                <ion-icon name="create-outline"></ion-icon>
-            </div>
-            <button class="questions-button" onclick="advanceCreation(this)">Prosseguir pra criar perguntas</button>
+            <div class="versatile-box"></div>
+            <button class="questions-button">Prosseguir pra criar perguntas</button>
         </div>
         <div class="levels hide">
             <div class="header">Agora, decida os níveis</div>
@@ -207,7 +172,7 @@
                 <div class="section-title">Nível 2</div>
                 <ion-icon name="create-outline"></ion-icon>
             </div>
-            <button class="levels-button" onclick="advanceCreation(this)">Finalizar Quizz</button>
+            <button class="levels-button"">Finalizar Quizz</button>
         </div>
         <div class="success hide">
             <div class="header">Seu quizz está pronto!</div>
@@ -216,8 +181,8 @@
                 <img src="https://img.quizur.com/f/img60b683a6c36277.83961667.png?lastEdited=1622573999">
                 <div class="description">O quão potterhead é você?</div>
             </div>
-            <button class="success-button" onclick="advanceCreation(this)">Acessar Quizz</button>
-            <button class="home-button" onclick="advanceCreation(this)">Voltar para home</button>
+            <button class="success-button">Acessar Quizz</button>
+            <button class="home-button">Voltar para home</button>
         </div>
 
 
