@@ -54,7 +54,7 @@
     </main>
     
     <main class="quizz-creation">
-        <div class="basic-information hide">
+        <div class="basic-information">
             <div class="header">Comece pelo começo</div>
             <div class="information-box">
                 <input class="input" placeholder="Título do seu quizz" onfocus="this.placeholder = ''"
@@ -66,7 +66,7 @@
                 <input class="input" placeholder="Quantidade de níveis do quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Quantidade de níveis do quizz'"/>
             </div>
-            <button>Prosseguir pra criar perguntas</button>
+            <button class="information-button" onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
         </div>
         <div class="questions hide">
             <div class="header">Crie suas perguntas</div>
@@ -106,7 +106,7 @@
                 <div class="section-title">Pergunta 2</div>
                 <ion-icon name="create-outline"></ion-icon>
             </div>
-            <button>Prosseguir pra criar perguntas</button>
+            <button class="questions-button" onclick="advanceCreation(this)">Prosseguir pra criar perguntas</button>
         </div>
         <div class="levels hide">
             <div class="header">Agora, decida os níveis</div>
@@ -126,17 +126,17 @@
                 <div class="section-title">Nível 2</div>
                 <ion-icon name="create-outline"></ion-icon>
             </div>
-            <button>Finalizar Quizz</button>
+            <button class="levels-button" onclick="advanceCreation(this)">Finalizar Quizz</button>
         </div>
-        <div class="success">
+        <div class="success hide">
             <div class="header">Seu quizz está pronto!</div>
             <div class="image-box">
                 <div class="gradient"></div>
                 <img src="https://img.quizur.com/f/img60b683a6c36277.83961667.png?lastEdited=1622573999">
                 <div class="description">O quão potterhead é você?</div>
             </div>
-            <button>Finalizar Quizz</button>
-            <button class="home-button">Finalizar Quizz</button>
+            <button class="success-button" onclick="advanceCreation(this)">Acessar Quizz</button>
+            <button class="home-button" onclick="advanceCreation(this)">Voltar para home</button>
         </div>
 
 
