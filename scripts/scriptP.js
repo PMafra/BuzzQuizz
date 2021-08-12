@@ -65,7 +65,6 @@ function renderBanner (element) {
     document.querySelector(".banner").innerHTML = banner;
 }
 
-
 let quizzSrc;
 function getQuizz (element) {
     quizzSrc = element.firstElementChild.src;
