@@ -1,6 +1,7 @@
 const inputs = document.querySelectorAll(".input");
 
 function advanceCreation(element) {
+    // Aqui, criar variaveis do querySelector para diminuir código? 
     if (element.classList.contains("information-button")) {
         document.querySelector(".basic-information").classList.add("hide");
         document.querySelector(".questions").classList.remove("hide");

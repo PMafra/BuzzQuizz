@@ -15,9 +15,9 @@
         <h1 onclick="refreshPage()">BuzzQuizz</h1>
     </header>
 
-    <main class="quizz-list hide">
+    <main class="quizz-list">
 
-        <div class="quizzes-title-box">
+        <div class="quizzes-title-box hide">
             <span>Seus Quizzes</span>
             <ion-icon name="add-circle" id="add-icon" onclick="changePages(this)"></ion-icon>
         </div>
@@ -29,11 +29,11 @@
                 <button id="create-button" onclick="changePages(this)">Criar Quizz</button>
             </div>
             
-            <div class="quizz-box hide" onclick="changePages(this)">
+            <div class="quizz-box" onclick="changePages(this); renderQuizzSelected(this)">
                 <img class="img-background" src="">
                 <div class="gradient-container">
-                    <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
                 </div>
+                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
             </div>
 
         </div>
@@ -49,11 +49,92 @@
 
     </main>
 
-    <main class="quizz-page">
+    <main class="quizz-page hide">
+
+        <div class="banner">
+        </div>
+
+        <div class="question-container">
+
+            <div class="question-box">
+                <span class="question">Perguntafsadfsadfasdfasdfsadfasdfasdfas dsafasdfasdf asdfasdfsdaf </span>
+            </div>
+
+            <div class="answers-box">
+                <div class="answer-option">
+                    <img src="asdf">
+                    <span class="legend">Legenda</span>
+                </div>
+                <div class="answer-option">
+                    <img src="asd">
+                    <span class="legend">Legenda</span>
+                </div>
+                <div class="answer-option">
+                    <img src="ad">
+                    <span class="legend">Legenda</span>
+                </div>
+                <div class="answer-option">
+                    <img src="asd">
+                    <span class="legend">Legenda</span>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <div class="question-container">
+
+            <div class="question-box">
+                <span class="question">Pergunta</span>
+            </div>
+
+            <div class="answers-box">
+                <div class="answer-option">
+                    <img src="">
+                    <span class="legend">Legenda</span>
+                </div>
+                <div class="answer-option">
+                    <img src="">
+                    <span class="legend">Legenda</span>
+                </div>
+                <div class="answer-option">
+                    <img src="">
+                    <span class="legend">LegendaLegendadasfsdfasd asdfsad fasdfsad fasdfasdfasdfasd asdfasd fasdf asdf asdf asdasdfasdfa34fwerg ewrgwer gwer gwe5hw ebwe tb ewt</span>
+                </div>
+            
+            </div>
+            
+        </div>
+
+        <div class="quizz-result question-container">
+
+            <div class="question-box">
+                <span class="question">Resultado</span>
+            </div>
+
+            <div class="answer-option">
+                <img src="">
+                <span class="legend">Legendadasfsdfasd asdfsad fasdfsad fasdfasdfasdfasd asdfasd fasdf asdf asdf asdasdfasdfa34fwerg ewrgwer gwer gwe5hw ebwe tb ewt</span>
+            </div>
+            
+        </div>
+
+        <button class="restart-button" onclick="changePages(this)">Reiniciar Quizz</button>
+
+        <button class="home-button" onclick="changePages(this)">Voltar para home</button>
+
+
+    </div>
+
+
+
+
+
+
 
     </main>
     
-    <main class="quizz-creation">
+    <main class="quizz-creation hide">
         <div class="basic-information">
             <div class="header">Comece pelo começo</div>
             <div class="information-box">
@@ -68,7 +149,7 @@
             </div>
             <button class="information-button" onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
         </div>
-        <div class="questions hide">
+        <div class="questions">
             <div class="header">Crie suas perguntas</div>
             <div class="information-box">
                 <div class="section-title">Pergunta 1</div>
