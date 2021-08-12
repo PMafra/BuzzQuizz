@@ -11,8 +11,6 @@
     <title>BuzzQuizz</title>
 </head>
 <body>
-    <header>BuzzQuizz</header>
-
     <header class="top-bar">
         <h1 onclick="refreshPage()">BuzzQuizz</h1>
     </header>
@@ -70,9 +68,9 @@
             </div>
             <button>Prosseguir pra criar perguntas</button>
         </div>
-        <div class="questions">
+        <div class="questions hide">
             <div class="header">Crie suas perguntas</div>
-            <div class="information-box first-question">
+            <div class="information-box">
                 <div class="section-title">Pergunta 1</div>
                 <div class="divisor"></div>
                 <input class="input" placeholder="Texto da pergunta" onfocus="this.placeholder = ''"
@@ -104,17 +102,33 @@
                 <input class="input" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'URL da imagem 3'"/>
             </div>
-            <div class="information-box second-question closed">
+            <div class="information-box closed">
                 <div class="section-title">Pergunta 2</div>
-                <ion-icon name="create-outline"></ion-icon>
-            </div>
-            <div class="information-box third-question closed">
-                <div class="section-title">Pergunta 3</div>
                 <ion-icon name="create-outline"></ion-icon>
             </div>
             <button>Prosseguir pra criar perguntas</button>
         </div>
-        <div class="levels"></div>
+        <div class="levels">
+            <div class="header">Agora, decida os níveis</div>
+            <div class="information-box">
+                <div class="section-title">Nível 1</div>
+                <div class="divisor"></div>
+                <input class="input" placeholder="Título do nível" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Título do nível'"/>
+                <input class="input" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = '% de acerto mínima'"/>
+                <input class="input" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'URL da imagem do nível'"/>
+                <input class="input" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Descrição do nível'"/>
+            </div>
+            <div class="information-box closed">
+                <div class="section-title">Nível 2</div>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <button>Finalizar Quizz</button>
+        </div>
+        </div>
         <div class="quizz-done"></div>
 
 
