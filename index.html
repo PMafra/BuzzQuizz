@@ -149,7 +149,7 @@
             </div>
             <button onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
         </div>
-        <div class="questions">
+        <div class="questions hide">
             <div class="header">Crie suas perguntas</div>
             <div class="versatile-box"></div>
             <button onclick="confirmQuestions()">Prosseguir pra criar níveis</button>
@@ -166,8 +166,8 @@
                 <img src="https://img.quizur.com/f/img60b683a6c36277.83961667.png?lastEdited=1622573999">
                 <div class="description">O quão potterhead é você?</div>
             </div>
-            <button class="success-button">Acessar Quizz</button>
-            <button class="home-button">Voltar para home</button>
+            <button onclick="finishCreation(this)">Acessar Quizz</button>
+            <button class="home-button" onclick="finishCreation(this)">Voltar para home</button>
         </div>
 
 
