@@ -1,27 +1,5 @@
-const inputs = document.querySelectorAll(".input");
-
-function advanceCreation(element) {
-    // Aqui, criar variaveis do querySelector para diminuir código? 
-    if (element.classList.contains("information-button")) {
-        document.querySelector(".basic-information").classList.add("hide");
-        document.querySelector(".questions").classList.remove("hide");
-    }
-    if (element.classList.contains("questions-button")) {
-        document.querySelector(".questions").classList.add("hide");
-        document.querySelector(".levels").classList.remove("hide");
-    }
-    if (element.classList.contains("levels-button")) {
-        document.querySelector(".levels").classList.add("hide");
-        document.querySelector(".success").classList.remove("hide");
-    }
-    if (element.classList.contains("success-button")) {
-        document.querySelector(".success").classList.add("hide");
-    }
-    if (element.classList.contains("home-button")) {
-        document.querySelector(".success").classList.add("hide");
-        document.querySelector(".quizz-list").classList.remove("hide");
-    }
-}
+const inputs = document.querySelectorAll(".basic-information .input");
+console.log(inputs);
 function isURL(str) {
     const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -30,6 +8,12 @@ function isURL(str) {
       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
+  }
+  function validarHexadecimal(str){
+    if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
+      return false
+    }
+    return true
   }
 
 function confirmInformation() {
@@ -51,6 +35,9 @@ function confirmInformation() {
     }
     console.log("Tudo certo!");
     printAmountOfQuestions();
+    printAmountOfLevels();
+    const neWinputs = document.querySelectorAll(".input");
+    console.log(neWinputs);
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
 }
@@ -66,33 +53,33 @@ function printAmountOfQuestions() {
                 <ion-icon name="create-outline"></ion-icon>
                 <div class="opened">
                     <div class="divisor"></div>
-                    <input class="input" placeholder="Texto da pergunta" onfocus="this.placeholder = ''"
+                    <input class="input question" placeholder="Texto da pergunta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Texto da pergunta'"/>
-                    <input class="input" placeholder="Cor de fundo da pergunta" onfocus="this.placeholder = ''"
+                    <input class="input background" placeholder="Cor de fundo da pergunta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Cor de fundo da pergunta'"/>
                     <div class="divider"></div>
                     <div class="section-title">Resposta correta</div>
                     <div class="divisor"></div>
-                    <input class="input" placeholder="Resposta correta" onfocus="this.placeholder = ''"
+                    <input class="input correct answer necessary" placeholder="Resposta correta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta correta'"/>
-                    <input class="input" placeholder="URL da imagem" onfocus="this.placeholder = ''"
+                    <input class="input correct necessary image" placeholder="URL da imagem" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem'"/>
                     <div class="divider"></div>
                     <div class="section-title">Respostas incorretas</div>
                     <div class="divisor"></div>
-                    <input class="input" placeholder="Resposta incorreta 1" onfocus="this.placeholder = ''"
+                    <input class="input incorrect answer necessary" placeholder="Resposta incorreta 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 1'"/>
-                    <input class="input" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
+                    <input class="input incorrect necessary image" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 1'"/>
                     <div class="divider"></div>
-                    <input class="input" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
+                    <input class="input incorrect" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 2'"/>
-                    <input class="input" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
+                    <input class="input incorrect image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 2'"/>
                     <div class="divider"></div>
-                    <input class="input" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 3'"/>
-                    <input class="input" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 3'"/>
                 </div>
             </div>
@@ -100,6 +87,33 @@ function printAmountOfQuestions() {
     }
     document.querySelector(".question.closed").classList.remove("closed");
 }
+
+function printAmountOfLevels() {
+    const numberOfLevels = Number(inputs[3].value);
+    const levels = document.querySelector(".levels .versatile-box");
+    levels.innerHTML = "";
+    for (i = 0 ; i < numberOfLevels ; i++) {
+        levels.innerHTML += `
+            <div class="information-box level closed" onclick="openLevel(this)">
+                <div class="section-title">Nível ${i + 1}</div>
+                <ion-icon name="create-outline"></ion-icon>
+                <div class="opened">
+                    <div class="divisor"></div>
+                    <input class="input" placeholder="Título do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Título do nível'"/>
+                    <input class="input" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = '% de acerto mínima'"/>
+                    <input class="input" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Resposta correta'"/>
+                    <input class="input" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Descrição do nível'"/>
+                </div>
+            </div>
+        `;
+    }
+    document.querySelector(".level.closed").classList.remove("closed");
+}
+
 function openQuestion(element) {
     const questions = document.querySelectorAll(".quizz-creation .question");
     for (i = 0 ; i < questions.length ; i++) {
@@ -107,6 +121,62 @@ function openQuestion(element) {
     }
     element.classList.remove("closed");
 }
-function confirmQuestions() {
+function openLevel(element) {
+    const questions = document.querySelectorAll(".quizz-creation .level");
+    for (i = 0 ; i < questions.length ; i++) {
+        questions[i].classList.add("closed");
+    }
+    element.classList.remove("closed");
 }
-
+function confirmQuestions() {
+    const Qinputs = document.querySelectorAll(".questions .input");
+    for (i = 0 ; i < Qinputs.length ; i ++) {
+        if (Qinputs[i].classList.contains("question")) {
+            if (Qinputs[i].value.length < 20) {
+                console.log ("As perguntas devem ter no mínimo 20 caracteres.");
+                return;
+            }
+        }
+        if (Qinputs[i].classList.contains("background")) {
+            if (!validarHexadecimal(Qinputs[i].value)) {
+                console.log ("O background deve ser uma cor hexadecimal.");
+                return;
+            }
+        }
+        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("correct")
+        && Qinputs[i].classList.contains("necessary")) {
+            if (Qinputs[i].value.length < 1) {
+                console.log ("Você precisa criar a resposta correta.");
+                return;
+            }
+        }
+        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("incorrect")
+        && Qinputs[i].classList.contains("necessary")) {
+            if (Qinputs[i].value.length < 1) {
+                console.log ("Você precisa criar ao menos uma resposta incorreta.");
+                return;
+            }
+        }
+        if (Qinputs[i].classList.contains("image") && Qinputs[i].classList.contains("necessary")) {
+            if (!isURL(Qinputs[i].value)) {
+                console.log ("Insira um URL válido.");
+                return;
+            }
+        }
+    }
+    document.querySelector(".questions").classList.add("hide");
+    document.querySelector(".levels").classList.remove("hide");
+}
+function confirmLevels() {
+    document.querySelector(".levels").classList.add("hide");
+    document.querySelector(".success").classList.remove("hide");
+}
+function finishCreation(element) {
+    if (element.classList.contains("home-button")) {
+        document.querySelector(".success").classList.add("hide");
+        document.querySelector(".quizz-list").classList.remove("hide");
+    }
+    else {
+        document.querySelector(".success").classList.add("hide");
+    }
+}

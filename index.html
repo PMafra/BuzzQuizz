@@ -119,32 +119,17 @@
                 <input class="input" placeholder="Quantidade de níveis do quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Quantidade de níveis do quizz'"/>
             </div>
-            <button class="information-button" onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
+            <button onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
         </div>
-        <div class="questions">
+        <div class="questions hide">
             <div class="header">Crie suas perguntas</div>
             <div class="versatile-box"></div>
-            <button class="questions-button">Prosseguir pra criar perguntas</button>
+            <button onclick="confirmQuestions()">Prosseguir pra criar níveis</button>
         </div>
         <div class="levels hide">
             <div class="header">Agora, decida os níveis</div>
-            <div class="information-box">
-                <div class="section-title">Nível 1</div>
-                <div class="divisor"></div>
-                <input class="input" placeholder="Título do nível" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Título do nível'"/>
-                <input class="input" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = '% de acerto mínima'"/>
-                <input class="input" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'URL da imagem do nível'"/>
-                <input class="input" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
-                onblur="this.placeholder = 'Descrição do nível'"/>
-            </div>
-            <div class="information-box closed">
-                <div class="section-title">Nível 2</div>
-                <ion-icon name="create-outline"></ion-icon>
-            </div>
-            <button class="levels-button"">Finalizar Quizz</button>
+            <div class="versatile-box"></div>
+            <button onclick="confirmLevels()">Finalizar Quizz</button>
         </div>
         <div class="success hide">
             <div class="header">Seu quizz está pronto!</div>
@@ -153,8 +138,8 @@
                 <img src="https://img.quizur.com/f/img60b683a6c36277.83961667.png?lastEdited=1622573999">
                 <div class="description">O quão potterhead é você?</div>
             </div>
-            <button class="success-button">Acessar Quizz</button>
-            <button class="home-button">Voltar para home</button>
+            <button onclick="finishCreation(this)">Acessar Quizz</button>
+            <button class="home-button" onclick="finishCreation(this)">Voltar para home</button>
         </div>
 
 
