@@ -1,8 +1,7 @@
 const createURL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes";
-
 let quizz = {
 	title: "Título do quizz",
-	image: "https://http.cat/411.jpg",
+	image: "",
 	questions: [],
     levels: []
 }
@@ -44,8 +43,6 @@ function confirmInformation() {
     quizzInformation(inputs);
     printAmountOfQuestions(inputs);
     printAmountOfLevels(inputs);
-    const neWinputs = document.querySelectorAll(".input");
-    console.log(neWinputs);
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
 }
@@ -85,14 +82,14 @@ function printAmountOfQuestions(inputs) {
                     <input class="input incorrect necessary image" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 1'"/>
                     <div class="divider"></div>
-                    <input class="input incorrect answer third" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
+                    <input class="input incorrect answer unnecessary third" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 2'"/>
-                    <input class="input incorrect image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
+                    <input class="input incorrect unnecessary third image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 2'"/>
                     <div class="divider"></div>
-                    <input class="input incorrect answer forth" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect answer unnecessary forth" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 3'"/>
-                    <input class="input incorrect forth image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect unnecessary forth image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 3'"/>
                 </div>
             </div>
@@ -174,6 +171,12 @@ function confirmQuestions() {
                 return;
             }
         }
+        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("unnecessary") && Qinputs[i].value !== "") {
+            if (!isURL(Qinputs[i + 1].value)) {
+                console.log ("Insira um URL válido.");
+                return;
+            }
+        }
     }
     QuizzQuestions();
     document.querySelector(".questions").classList.add("hide");
@@ -198,26 +201,26 @@ function QuizzQuestions() {
         }
     }
     for(i=0 ; i < quizz.questions.length ; i ++) {
-        if (document.querySelectorAll(".input.third")[i] !== 0 && document.querySelectorAll(".input.forth")[i] === 0) {
-            quizz.questions[i].answers.length === 3;
-            quizz.questions[i].answers[2] = {
+        if (document.querySelectorAll(".input.third.answer")[i].value !== "") {
+            quizz.questions[i].answers.push({
                 text: document.querySelectorAll(".input.incorrect.third.answer")[i].value,
                 image: document.querySelectorAll(".input.incorrect.third.image")[i].value,
                 isCorrectAnswer: false
-                }
+                })
         }
-        if (document.querySelectorAll(".input.third")[i].value !== 0 && document.querySelectorAll(".input.forth")[i].value !== 0) {
-            quizz.questions[i].answers.length === 4;
-            quizz.questions[i].answers[3] = {
+        if (document.querySelectorAll(".input.forth.answer")[i].value !== "") {
+            quizz.questions[i].answers.push({
                 text: document.querySelectorAll(".input.incorrect.forth.answer")[i].value,
                 image: document.querySelectorAll(".input.incorrect.forth.image")[i].value,
                 isCorrectAnswer: false
-                }
+                })
         }
     }
 }
 
 function confirmLevels() {
+    let checkifthereisalowscore = false;
+    let checkifthereissamepercentage = false;
     const Linputs = document.querySelectorAll(".levels .input");
     for (i = 0 ; i < Linputs.length ; i++) {
         if (Linputs[i].classList.contains("title")) {
@@ -231,6 +234,14 @@ function confirmLevels() {
             || Linputs[i].value === "") {
                 console.log ("Escolha valores entre 0 e 100 para a porcentagem de acerto.");
                 return;
+            }
+            if (Number(Linputs[i].value) === 0) {
+                checkifthereisalowscore = true;
+            }
+            for(j = i+1 ; j < Linputs.length ; j++) {
+                if (Number(Linputs[j].value) === Number(Linputs[i].value)) {
+                    checkifthereissamepercentage = true;
+                }
             }
         }
         if (Linputs[i].classList.contains("image")) {
@@ -246,9 +257,17 @@ function confirmLevels() {
             }
         }
     }
+    if (checkifthereisalowscore === false) {
+        console.log("pelo menos um nível deve ter porcentagem de acertos igual a 0.");
+        return;
+    }
+    if (checkifthereissamepercentage === true) {
+        console.log("Não pode ter dois níveis com a mesma porcentagem.");
+        return;
+    }
     quizzLevels();
     console.log(quizz);
-    //createQuizz();
+    createQuizz();
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
 }
@@ -268,10 +287,10 @@ function finishCreation(element) {
     document.querySelector(".basic-information").classList.remove("hide");
     document.querySelector(".quizz-creation").classList.add("hide");
     if (element.classList.contains("home-button")) {
-        document.querySelector(".quizz-list").classList.remove("hide");
+        location.reload();
     }
     else {
-        document.querySelector(".quizz-page").classList.remove("hide");
+        location.reload();
     }
 }
 function createQuizz() {
