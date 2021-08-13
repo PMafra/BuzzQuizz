@@ -22,7 +22,7 @@ function renderAllQuizzes (response) {
     for (let i = 0; i < response.data.length; i++) {
         let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
         allQuizzesContainer.innerHTML += 
-        `<div class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+        `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
             <img class="img-background" src="${response.data[i].image}">
             <div class="gradient-container">
             </div>
@@ -61,15 +61,19 @@ function refreshPage () {
 }
 
 // QUIZZ PAGE
+
 let banner;
+
 function renderBanner (element) {
     banner = element.innerHTML;
-    document.querySelector(".banner").innerHTML = banner;
+    document.querySelector(".quizz-page .banner").innerHTML = banner;
 }
 
-let quizzSrc;
+let selectedQuizzId;
+
 function getQuizz (element) {
-    quizzSrc = element.firstElementChild.src;
+    selectedQuizzId = Number(element.id);
+    console.log(element.id);
 
     let allQuizzes = axios.get(SERVER_URL_QUIZZES);
     allQuizzes.then(renderQuizzQuestions);
@@ -82,7 +86,7 @@ let totalQuestions = 0;
 function renderQuizzQuestions (response) {
     console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
-        if (quizzSrc === response.data[i].image) {
+        if (selectedQuizzId === response.data[i].id) {
             for (let j = 0; j < response.data[i].questions.length; j++) {
                 page.innerHTML +=
                 `<div class="question-container" id="q${j}">
@@ -101,6 +105,7 @@ function renderQuizzQuestions (response) {
                             <span class="legend">${response.data[i].questions[j].answers[k].text}</span>
                         </div>`;
                 }
+                
             questionsAnswered ++;
             totalQuestions++;
             }      
@@ -171,12 +176,10 @@ function isFinished (remainingQuestions) {
 }
 
 function renderResult(response) {
-    let x = document.querySelector(".banner .description").innerHTML;
-    console.log(x);
     let result;
     
     for (let i = 0; i < response.data.length; i++) {
-        if (response.data[i].title === x){
+        if (selectedQuizzId === response.data[i].id){
             for (let j = 0; j < response.data[i].levels.length; j++) {
                 console.log(Math.round((numOfHits/totalQuestions)*100));
                 if (Math.round((numOfHits/totalQuestions)*100) >= response.data[i].levels[j].minValue) {
@@ -194,6 +197,7 @@ function renderResult(response) {
                         <button class="home-button" onclick="refreshPage()">Voltar para home</button>`;
                 }           
             }
+            console.log(result);
             page.innerHTML += result;        
         }
     }

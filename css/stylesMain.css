@@ -141,7 +141,6 @@ body {
     position: absolute;
     width: 340px;
     height: 181px;
-    background-color: cyan;
     top: 0;
     border-radius: 6px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 63.54%, #000000 100%);
@@ -150,11 +149,13 @@ body {
 .quizz-list .quizzes-container 
 .description {
     position: absolute;
+    width: 307px;
     color: #ffffff;
     font-size: 19px;
     bottom: 12px;
     left: 18px;
     line-height: 23px;
+    word-wrap: break-word;
 }
 
 @media (min-width: 1100px) {
