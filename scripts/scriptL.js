@@ -1,5 +1,12 @@
-const inputs = document.querySelectorAll(".basic-information .input");
-console.log(inputs);
+const createURL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes";
+
+let quizz = {
+	title: "Título do quizz",
+	image: "https://http.cat/411.jpg",
+	questions: [],
+    levels: []
+}
+
 function isURL(str) {
     const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -16,6 +23,7 @@ function isURL(str) {
     return true
   }
 function confirmInformation() {
+    const inputs = document.querySelectorAll(".basic-information .input");
     if (inputs[0].value.length < 20 || inputs[0].value.length > 65) {
         console.log("O nome do seu quizz deve ter de 20 a 65 caracteres");
         return;
@@ -33,15 +41,21 @@ function confirmInformation() {
         return;
     }
     console.log("Tudo certo!");
-    printAmountOfQuestions();
-    printAmountOfLevels();
+    quizzInformation(inputs);
+    printAmountOfQuestions(inputs);
+    printAmountOfLevels(inputs);
     const neWinputs = document.querySelectorAll(".input");
     console.log(neWinputs);
     document.querySelector(".basic-information").classList.add("hide");
-    document.querySelector(".levels").classList.remove("hide");
+    document.querySelector(".questions").classList.remove("hide");
 }
-
-function printAmountOfQuestions() {
+function quizzInformation(inputs) {
+    quizz.title = inputs[0].value;
+    quizz.image = inputs[1].value;
+    quizz.questions.length = Number(inputs[2].value);
+    quizz.levels.length = Number(inputs[3].value);
+}
+function printAmountOfQuestions(inputs) {
     const numberOfQuestions = Number(inputs[2].value);
     const questions = document.querySelector(".questions .versatile-box");
     questions.innerHTML = "";
@@ -71,14 +85,14 @@ function printAmountOfQuestions() {
                     <input class="input incorrect necessary image" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 1'"/>
                     <div class="divider"></div>
-                    <input class="input incorrect" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
+                    <input class="input incorrect answer third" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 2'"/>
                     <input class="input incorrect image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 2'"/>
                     <div class="divider"></div>
-                    <input class="input incorrect" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect answer forth" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 3'"/>
-                    <input class="input incorrect image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
+                    <input class="input incorrect forth image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 3'"/>
                 </div>
             </div>
@@ -86,7 +100,7 @@ function printAmountOfQuestions() {
     }
     document.querySelector(".question.closed").classList.remove("closed");
 }
-function printAmountOfLevels() {
+function printAmountOfLevels(inputs) {
     const numberOfLevels = Number(inputs[3].value);
     const levels = document.querySelector(".levels .versatile-box");
     levels.innerHTML = "";
@@ -161,8 +175,46 @@ function confirmQuestions() {
             }
         }
     }
+    QuizzQuestions();
     document.querySelector(".questions").classList.add("hide");
     document.querySelector(".levels").classList.remove("hide");
+}
+function QuizzQuestions() {
+    for(i=0 ; i < quizz.questions.length ; i ++) {
+        quizz.questions[i] = {
+			title: document.querySelectorAll(".input.question")[i].value,
+			color: document.querySelectorAll(".input.background")[i].value,
+			answers: [{
+                text: document.querySelectorAll(".input.correct.answer")[i].value,
+                image: document.querySelectorAll(".input.correct.image")[i].value,
+                isCorrectAnswer: true
+                },
+                {
+                text: document.querySelectorAll(".input.incorrect.necessary.answer")[i].value,
+                image: document.querySelectorAll(".input.incorrect.necessary.image")[i].value,
+                isCorrectAnswer: false
+                }
+            ]
+        }
+    }
+    for(i=0 ; i < quizz.questions.length ; i ++) {
+        if (document.querySelectorAll(".input.third")[i] !== 0 && document.querySelectorAll(".input.forth")[i] === 0) {
+            quizz.questions[i].answers.length === 3;
+            quizz.questions[i].answers[2] = {
+                text: document.querySelectorAll(".input.incorrect.third.answer")[i].value,
+                image: document.querySelectorAll(".input.incorrect.third.image")[i].value,
+                isCorrectAnswer: false
+                }
+        }
+        if (document.querySelectorAll(".input.third")[i].value !== 0 && document.querySelectorAll(".input.forth")[i].value !== 0) {
+            quizz.questions[i].answers.length === 4;
+            quizz.questions[i].answers[3] = {
+                text: document.querySelectorAll(".input.incorrect.forth.answer")[i].value,
+                image: document.querySelectorAll(".input.incorrect.forth.image")[i].value,
+                isCorrectAnswer: false
+                }
+        }
+    }
 }
 
 function confirmLevels() {
@@ -194,8 +246,22 @@ function confirmLevels() {
             }
         }
     }
+    quizzLevels();
+    console.log(quizz);
+    //createQuizz();
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
+}
+
+function quizzLevels() {
+    for(i=0 ; i < quizz.levels.length ; i ++) {
+        quizz.levels[i] = {
+			title: document.querySelectorAll(".levels .input.title")[i].value,
+			image: document.querySelectorAll(".levels .input.image")[i].value,
+			text: document.querySelectorAll(".levels .input.description")[i].value,
+			minValue: document.querySelectorAll(".levels .input.percentage")[i].value
+		}
+    }
 }
 function finishCreation(element) {
     document.querySelector(".success").classList.add("hide");
@@ -207,4 +273,16 @@ function finishCreation(element) {
     else {
         document.querySelector(".quizz-page").classList.remove("hide");
     }
+}
+function createQuizz() {
+    const promise = axios.post(createURL, quizz);
+    promise.then(sendQuizz);
+    promise.catch(incorrectQuizz);
+}
+function sendQuizz(response) {
+    console.log("enviado");
+    console.log(response);
+}
+function incorrectQuizz(error) {
+    console.log(error);
 }
