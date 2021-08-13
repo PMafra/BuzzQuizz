@@ -10,10 +10,8 @@ let quizz = {
 	questions: [],
     levels: []
 }
-const storagedQuizzes = localStorage.getItem("list");
-const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
-console.log(userQuizzesForPrinting);
 
+loadUserQuizzes()
 function loadUserQuizzes() {
     const storagedQuizzes = localStorage.getItem("list");
     const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
