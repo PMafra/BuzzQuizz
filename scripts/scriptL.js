@@ -35,6 +35,7 @@ function confirmInformation() {
     quizzInformation(inputs);
     printAmountOfQuestions(inputs);
     printAmountOfLevels(inputs);
+    printFinalScreen(inputs)
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
 }
@@ -113,6 +114,11 @@ function printAmountOfLevels(inputs) {
         `;
     }
     document.querySelector(".level.closed").classList.remove("closed");
+}
+function printFinalScreen(inputs) {
+    document.querySelector(".success img").src = (inputs[1].value);
+    document.querySelector(".success .description").innerHTML = (inputs[0].value);
+
 }
 function openQuestion(element) {
     const questions = document.querySelectorAll(".quizz-creation .question");

@@ -26,7 +26,7 @@ loadPage();
 
 function loadPage () {
     getAllQuizzes();
-    
+
 }
 
 function getAllQuizzes () {
