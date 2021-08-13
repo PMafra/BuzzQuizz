@@ -78,6 +78,7 @@
     color: #ffffff;
     text-align: center;
     line-height: 22.5px;
+    word-wrap: break-word;
 }
 
 .answers-box {
@@ -105,6 +106,7 @@
     line-height: 15.5px;
     margin-top: 5px;
     padding: 2px 0;
+    word-wrap: break-word;
 }
 
 .question-container.quizz-result .question-box {
