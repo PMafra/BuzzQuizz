@@ -1,11 +1,3 @@
-const createURL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes";
-let quizz = {
-	title: "Título do quizz",
-	image: "",
-	questions: [],
-    levels: []
-}
-
 function isURL(str) {
     const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -167,13 +159,19 @@ function confirmQuestions() {
         }
         if (Qinputs[i].classList.contains("image") && Qinputs[i].classList.contains("necessary")) {
             if (!isURL(Qinputs[i].value)) {
-                console.log ("Insira um URL válido.");
+                console.log ("Insira URl´s válidos.");
                 return;
             }
         }
         if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("unnecessary") && Qinputs[i].value !== "") {
             if (!isURL(Qinputs[i + 1].value)) {
-                console.log ("Insira um URL válido.");
+                console.log ("Insira URl´s válidos.");
+                return;
+            }
+        }
+        if (Qinputs[i].classList.contains("image") && Qinputs[i].classList.contains("unnecessary") && Qinputs[i].value !== "") {
+            if (Qinputs[i - 1].value === "") {
+                console.log ("Você precisa preencher todos os parâmetros de uma mesma resposta.");
                 return;
             }
         }
@@ -246,7 +244,7 @@ function confirmLevels() {
         }
         if (Linputs[i].classList.contains("image")) {
             if (!isURL(Linputs[i].value)) {
-                console.log ("Insira um URL válido.");
+                console.log ("Insira URL´s válidos.");
                 return;
             }
         }
@@ -258,7 +256,7 @@ function confirmLevels() {
         }
     }
     if (checkifthereisalowscore === false) {
-        console.log("pelo menos um nível deve ter porcentagem de acertos igual a 0.");
+        console.log("Pelo menos um nível deve ter porcentagem de acertos igual a 0.");
         return;
     }
     if (checkifthereissamepercentage === true) {
@@ -282,10 +280,7 @@ function quizzLevels() {
 		}
     }
 }
-function finishCreation(element) {
-    document.querySelector(".success").classList.add("hide");
-    document.querySelector(".basic-information").classList.remove("hide");
-    document.querySelector(".quizz-creation").classList.add("hide");
+function quizzCreatedScreen(element) {
     if (element.classList.contains("home-button")) {
         location.reload();
     }
@@ -294,14 +289,19 @@ function finishCreation(element) {
     }
 }
 function createQuizz() {
-    const promise = axios.post(createURL, quizz);
+    const promise = axios.post(SERVER_URL_QUIZZES, quizz);
     promise.then(sendQuizz);
     promise.catch(incorrectQuizz);
 }
 function sendQuizz(response) {
-    console.log("enviado");
+    const newQuizz = response;
     console.log(response);
+    addToDataStorage(newQuizz)
 }
 function incorrectQuizz(error) {
     console.log(error);
+}
+function addToDataStorage(newQuizz) {
+    userQuizzes.push(newQuizz);
+    localStorage.setItem("list", JSON.stringify(userQuizzes));
 }

@@ -3,6 +3,26 @@ const SERVER_URL_QUIZZES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/b
 const main = document.querySelector(".quizz-list");
 const page = document.querySelector(".quizz-page");
 const creation = document.querySelector(".quizz-creation");
+let userQuizzes = [];
+let quizz = {
+	title: "",
+	image: "",
+	questions: [],
+    levels: []
+}
+const storagedQuizzes = localStorage.getItem("list");
+const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
+console.log(userQuizzesForPrinting);
+
+function loadUserQuizzes() {
+    const storagedQuizzes = localStorage.getItem("list");
+    const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
+    if (userQuizzesForPrinting === null) {
+        return;
+    }
+    userQuizzes = userQuizzesForPrinting;
+    console.log(userQuizzes);
+}
 
 loadPage();
 
@@ -19,6 +39,7 @@ function getAllQuizzes () {
 }
 
 function renderAllQuizzes (response) {
+    console.log(response);
     for (let i = 0; i < response.data.length; i++) {
         let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
         allQuizzesContainer.innerHTML += 
