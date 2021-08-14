@@ -224,11 +224,6 @@ function confirmQuestions() {
             }
         }
     }
-    // for(i = 0 ; i < quizz.questions.length  ; i ++) {
-    //     if (document.querySelector(".question.closed")..classList.contains("error-background")) {
-    //         return;
-    //     }
-    // }
     for(i = 0 ; i < questionInputs.length ; i ++) {
         if (questionInputs[i].classList.contains("error-background")) {
             return;
@@ -354,9 +349,7 @@ function quizzCreatedScreen(element) {
         location.reload();
     }
     else {
-        changePages(this);
-        renderBanner(this);
-        getQuizz(this);
+        location.reload();
     }
 }
 
@@ -368,14 +361,15 @@ function createQuizz() {
 
 function sendQuizz(response) {
     const newQuizz = response;
-   // document.querySelector(".success .test-created").id = newQuizz.answers.data.id;
+    document.querySelector(".success .test-created").id = newQuizz.answers.data.id;
     console.log(response);
-    addToDataStorage(newQuizz)
+    addToDataStorage(newQuizz);
 }
 
 function incorrectQuizz(error) {
     console.log(error);
     alert("Ocorreu um erro, tente novamente.");
+    location.reload();
 }
 
 function addToDataStorage(newQuizz) {
