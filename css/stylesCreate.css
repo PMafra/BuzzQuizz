@@ -13,7 +13,6 @@ body {
     align-items: center;
     gap: 30px;
 }
-
 .quizz-creation .header {
     font-size: 23px;
     font-weight: 700;
@@ -74,6 +73,9 @@ body {
     font-size: 23px;
     cursor: pointer;
 }
+.quizz-creation .closed .closed-error {
+    background: #FFE9E9;
+}
 .versatile-box {
     display: flex;
     flex-direction: column;
@@ -86,7 +88,7 @@ body {
     display: flex;
 }
 
-/* SUCCES */
+/* SUCCESS */
 
 .quizz-creation .success .home-button {
     color: #818181;
@@ -124,7 +126,14 @@ body {
     line-height: 27px;
     color: #FFFFFF;
 }
-
+.quizz-creation .error {
+    font-size: 16px;
+    color: #EC362D;
+    margin-bottom: 8px;
+}
+.error-background {
+    background: #FFE9E9;
+}
 @media (max-width: 1100px) {
     .quizz-creation {
         margin-top: 106px;

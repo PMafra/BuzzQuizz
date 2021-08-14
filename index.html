@@ -66,12 +66,16 @@
             <div class="information-box opened">
                 <input class="input" placeholder="Título do seu quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Título do seu quizz'"/>
+                <div class = "error hide">O nome do seu quizz deve ter de 20 a 65 caracteres</div>
                 <input class="input" placeholder="URL da imagem do seu quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'URL da imagem do seu quizz'"/>
+                <div class = "error hide">Insira um URL de imagem válido.</div>
                 <input class="input" placeholder="Quantidade de perguntas do quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Quantidade de perguntas do quizz'"/>
+                <div class = "error hide">Seu quizz deve ter no mínimo 3 perguntas.</div>
                 <input class="input" placeholder="Quantidade de níveis do quizz" onfocus="this.placeholder = ''"
                 onblur="this.placeholder = 'Quantidade de níveis do quizz'"/>
+                <div class = "error hide">Seu quizz deve ter no mínimo 2 níveis.</div>
             </div>
             <button onclick="confirmInformation()">Prosseguir pra criar perguntas</button>
         </div>

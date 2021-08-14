@@ -15,21 +15,31 @@ function isURL(str) {
   }
 function confirmInformation() {
     const inputs = document.querySelectorAll(".basic-information .input");
+    const errors = document.querySelectorAll(".basic-information .error");
+    for(i = 0 ; i < inputs.length ; i ++) {
+        inputs[i].classList.remove("error-background");
+        errors[i].classList.add("hide");
+    }
     if (inputs[0].value.length < 20 || inputs[0].value.length > 65) {
-        console.log("O nome do seu quizz deve ter de 20 a 65 caracteres");
-        return;
+        inputs[0].classList.add("error-background");
+        errors[0].classList.remove("hide");
     }
     if (!isURL(inputs[1].value)) {
-        console.log("Tente outro link.");
-        return;
+        inputs[1].classList.add("error-background");
+        errors[1].classList.remove("hide");
     }
     if (Number(inputs[2].value) < 3 || Number(inputs[2].value) === NaN) {
-        console.log("Seu quizz deve ter no mínimo 3 perguntas.");
-        return;
+        inputs[2].classList.add("error-background");
+        errors[2].classList.remove("hide");
     }
     if (Number(inputs[3].value) < 2 || Number(inputs[3].value) === NaN) {
-        console.log("Seu quizz deve ter no mínimo 2 níveis.");
-        return;
+        inputs[3].classList.add("error-background");
+        errors[3].classList.remove("hide");
+    }
+    for(i = 0 ; i < inputs.length ; i ++) {
+        if (inputs[i].classList.contains("error-background")) {
+            return;
+        }
     }
     console.log("Tudo certo!");
     quizzInformation(inputs);
@@ -58,32 +68,42 @@ function printAmountOfQuestions(inputs) {
                     <div class="divisor"></div>
                     <input class="input question" placeholder="Texto da pergunta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Texto da pergunta'"/>
+                    <div class = "error hide ">As perguntas devem ter no mínimo 20 caracteres.</div>
                     <input class="input background" placeholder="Cor de fundo da pergunta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Cor de fundo da pergunta'"/>
+                    <div class = "error hide ">O background deve ser uma cor hexadecimal.</div>
                     <div class="divider"></div>
                     <div class="section-title">Resposta correta</div>
                     <div class="divisor"></div>
                     <input class="input correct answer necessary" placeholder="Resposta correta" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta correta'"/>
+                    <div class = "error hide ">Você precisa criar a resposta correta.</div>
                     <input class="input correct necessary image" placeholder="URL da imagem" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem'"/>
+                    <div class = "error hide ">Insira um URl de imagem válido.</div>
                     <div class="divider"></div>
                     <div class="section-title">Respostas incorretas</div>
                     <div class="divisor"></div>
                     <input class="input incorrect answer necessary" placeholder="Resposta incorreta 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 1'"/>
+                    <div class = "error hide ">Você precisa criar ao menos uma resposta incorreta.</div>
                     <input class="input incorrect necessary image" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 1'"/>
+                    <div class = "error hide ">Insira um URl de imagem válido.</div>
                     <div class="divider"></div>
                     <input class="input incorrect answer unnecessary third" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 2'"/>
+                    <div class = "error hide ">Essa resposta precisa de um texto.</div>
                     <input class="input incorrect unnecessary third image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 2'"/>
+                    <div class = "error hide ">Insira um URl de imagem válido.</div>
                     <div class="divider"></div>
                     <input class="input incorrect answer unnecessary forth" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 3'"/>
+                    <div class = "error hide ">Essa resposta precisa de um texto.</div>
                     <input class="input incorrect unnecessary forth image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 3'"/>
+                    <div class = "error hide ">Insira um URl de imagem válido.</div>
                 </div>
             </div>
         `;
@@ -103,12 +123,16 @@ function printAmountOfLevels(inputs) {
                     <div class="divisor"></div>
                     <input class="input title" placeholder="Título do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Título do nível'"/>
+                    <div class = "error hide">Título de nível deve ter no mínimo 10 caracteres.</div>
                     <input class="input percentage" placeholder="% de acerto mínima" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = '% de acerto mínima'"/>
+                    <div class = "error hide">Escolha valores entre 0 e 100 para a porcentagem de acerto.</div>
                     <input class="input image" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta correta'"/>
+                    <div class = "error hide">Insira um URl de imagem válido.</div>
                     <input class="input description" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Descrição do nível'"/>
+                    <div class = "error hide">Descrição de nível deve ter no mínimo 30 caracteres.</div>
                 </div>
             </div>
         `;
@@ -135,51 +159,74 @@ function openLevel(element) {
     element.classList.remove("closed");
 }
 function confirmQuestions() {
-    const Qinputs = document.querySelectorAll(".questions .input");
-    for (i = 0 ; i < Qinputs.length ; i ++) {
-        if (Qinputs[i].classList.contains("question")) {
-            if (Qinputs[i].value.length < 20) {
-                console.log ("As perguntas devem ter no mínimo 20 caracteres.");
-                return;
+    const questionInputs = document.querySelectorAll(".questions .input");
+    const questionErrors = document.querySelectorAll(".questions .error");
+    console.log (questionInputs);
+    console.log (questionInputs);
+    for(i = 0 ; i < questionInputs.length ; i ++) {
+        questionInputs[i].classList.remove("error-background");
+        questionErrors[i].classList.add("hide");
+    }
+    for (i = 0 ; i < questionInputs.length ; i ++) {
+        if (questionInputs[i].classList.contains("question")) {
+            if (questionInputs[i].value.length < 20) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("background")) {
-            if (!validarHexadecimal(Qinputs[i].value)) {
-                console.log ("O background deve ser uma cor hexadecimal.");
-                return;
+        if (questionInputs[i].classList.contains("background")) {
+            if (!validarHexadecimal(questionInputs[i].value)) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("correct")
-        && Qinputs[i].classList.contains("necessary")) {
-            if (Qinputs[i].value.length < 1) {
-                console.log ("Você precisa criar a resposta correta.");
-                return;
+        if (questionInputs[i].classList.contains("answer") && questionInputs[i].classList.contains("correct")
+        && questionInputs[i].classList.contains("necessary")) {
+            if (questionInputs[i].value.length < 1) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("incorrect")
-        && Qinputs[i].classList.contains("necessary")) {
-            if (Qinputs[i].value.length < 1) {
-                console.log ("Você precisa criar ao menos uma resposta incorreta.");
-                return;
+        if (questionInputs[i].classList.contains("answer") && questionInputs[i].classList.contains("incorrect")
+        && questionInputs[i].classList.contains("necessary")) {
+            if (questionInputs[i].value.length < 1) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("image") && Qinputs[i].classList.contains("necessary")) {
-            if (!isURL(Qinputs[i].value)) {
-                console.log ("Insira URl´s válidos.");
-                return;
+        if (questionInputs[i].classList.contains("image") && questionInputs[i].classList.contains("necessary")) {
+            if (!isURL(questionInputs[i].value)) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("answer") && Qinputs[i].classList.contains("unnecessary") && Qinputs[i].value !== "") {
-            if (!isURL(Qinputs[i + 1].value)) {
-                console.log ("Insira URl´s válidos.");
-                return;
+        if (questionInputs[i].classList.contains("answer") && questionInputs[i].classList.contains("unnecessary") && questionInputs[i].value !== "") {
+            if (!isURL(questionInputs[i + 1].value)) {
+                questionInputs[i + 1].classList.add("error-background");
+                questionErrors[i + 1].classList.remove("hide");
             }
         }
-        if (Qinputs[i].classList.contains("image") && Qinputs[i].classList.contains("unnecessary") && Qinputs[i].value !== "") {
-            if (Qinputs[i - 1].value === "") {
-                console.log ("Você precisa preencher todos os parâmetros de uma mesma resposta.");
-                return;
+        if (questionInputs[i].classList.contains("image") && questionInputs[i].classList.contains("unnecessary") && questionInputs[i].value !== "") {
+            if (questionInputs[i - 1].value === "") {
+                questionInputs[i - 1].classList.add("error-background");
+                questionErrors[i - 1].classList.remove("hide");
             }
+        }
+        if (questionInputs[i].classList.contains("image") && questionInputs[i].classList.contains("unnecessary") && questionInputs[i].value !== "") {
+            if (!isURL(questionInputs[i].value)) {
+                questionInputs[i].classList.add("error-background");
+                questionErrors[i].classList.remove("hide");
+            }
+        }
+    }
+    // for(i = 0 ; i < quizz.questions.length  ; i ++) {
+    //     if (document.querySelector(".question.closed")..classList.contains("error-background")) {
+    //         return;
+    //     }
+    // }
+    for(i = 0 ; i < questionInputs.length ; i ++) {
+        if (questionInputs[i].classList.contains("error-background")) {
+            return;
         }
     }
     QuizzQuestions();
@@ -225,48 +272,58 @@ function QuizzQuestions() {
 function confirmLevels() {
     let checkifthereisalowscore = false;
     let checkifthereissamepercentage = false;
-    const Linputs = document.querySelectorAll(".levels .input");
-    for (i = 0 ; i < Linputs.length ; i++) {
-        if (Linputs[i].classList.contains("title")) {
-            if (Linputs[i].value.length < 10) {
-                console.log ("Título de nível deve ter no mínimo 10 caracteres.");
-                return;
+    const levelInputs = document.querySelectorAll(".levels .input");
+    const levelErrors = document.querySelectorAll(".levels .error");
+    for(i = 0 ; i < levelInputs.length ; i ++) {
+        levelInputs[i].classList.remove("error-background");
+        levelErrors[i].classList.add("hide");
+    }
+    for (i = 0 ; i < levelInputs.length ; i++) {
+        if (levelInputs[i].classList.contains("title")) {
+            if (levelInputs[i].value.length < 10) {
+                levelInputs[i].classList.add("error-background");
+                levelErrors[i].classList.remove("hide");
             }
         }
-        if (Linputs[i].classList.contains("percentage")) {
-            if (Number(Linputs[i].value) < 0 || Number(Linputs[i].value) > 100
-            || Linputs[i].value === "") {
-                console.log ("Escolha valores entre 0 e 100 para a porcentagem de acerto.");
-                return;
+        if (levelInputs[i].classList.contains("percentage")) {
+            if (Number(levelInputs[i].value) < 0 || Number(levelInputs[i].value) > 100
+            || levelInputs[i].value === "") {
+                levelInputs[i].classList.add("error-background");
+                levelErrors[i].classList.remove("hide");
             }
-            if (Number(Linputs[i].value) === 0) {
+            if (Number(levelInputs[i].value) === 0) {
                 checkifthereisalowscore = true;
             }
-            for(j = i+1 ; j < Linputs.length ; j++) {
-                if (Number(Linputs[j].value) === Number(Linputs[i].value)) {
+            for(j = i+1 ; j < levelInputs.length ; j++) {
+                if (Number(levelInputs[j].value) === Number(levelInputs[i].value)) {
                     checkifthereissamepercentage = true;
                 }
             }
         }
-        if (Linputs[i].classList.contains("image")) {
-            if (!isURL(Linputs[i].value)) {
-                console.log ("Insira URL´s válidos.");
-                return;
+        if (levelInputs[i].classList.contains("image")) {
+            if (!isURL(levelInputs[i].value)) {
+                levelInputs[i].classList.add("error-background");
+                levelErrors[i].classList.remove("hide");
             }
         }
-        if (Linputs[i].classList.contains("description")) {
-            if (Linputs[i].value.length < 30) {
-                console.log ("Descrição de nível deve ter no mínimo 30 caracteres.");
-                return;
+        if (levelInputs[i].classList.contains("description")) {
+            if (levelInputs[i].value.length < 30) {
+                levelInputs[i].classList.add("error-background");
+                levelErrors[i].classList.remove("hide");
             }
+        }
+    }
+    for(i = 0 ; i < levelInputs.length ; i ++) {
+        if (levelInputs[i].classList.contains("error-background")) {
+            return;
         }
     }
     if (checkifthereisalowscore === false) {
-        console.log("Pelo menos um nível deve ter porcentagem de acertos igual a 0.");
+        alert("Pelo menos um nível deve ter porcentagem de acertos igual a 0.");
         return;
     }
     if (checkifthereissamepercentage === true) {
-        console.log("Não pode ter dois níveis com a mesma porcentagem.");
+        alert("Não pode ter dois níveis com a mesma porcentagem.");
         return;
     }
     quizzLevels();
