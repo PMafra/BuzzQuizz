@@ -74,11 +74,14 @@ const removeClass = (element, className) => {
 }
 
 const restartingQuizz = () => {
-    let resetingAnswersAndResult = document.querySelectorAll(".reset, .color-green, .color-red, .blurred-background");
+    let resetingAnswersAndResult = document.querySelectorAll(".reset, .color-green, .color-red, .blurred-background, .answers-box");
 
     resetingAnswersAndResult.forEach(element => {
         if (element.classList.contains("reset")) {
             element.remove();
+        }
+        if (element.classList.contains("answers-box")) {
+            shuffleDivs(element);
         }
         removeClass(element, "color-green");
         removeClass(element, "color-red");
@@ -87,6 +90,7 @@ const restartingQuizz = () => {
 
     questionsAnswered = totalQuestions;
     numOfHits = 0;
+
 }
 
 function refreshPage () {
