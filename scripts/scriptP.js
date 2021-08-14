@@ -11,7 +11,6 @@ let quizz = {
     levels: []
 }
 
-loadUserQuizzes()
 function loadUserQuizzes() {
     const storagedQuizzes = localStorage.getItem("list");
     const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
@@ -20,13 +19,30 @@ function loadUserQuizzes() {
     }
     userQuizzes = userQuizzesForPrinting;
     console.log(userQuizzes);
+    renderUserQuizzes(userQuizzes);
+}
+
+function renderUserQuizzes (userQuizzes) {
+    for (let i = 0; i < userQuizzes.length; i++) {
+        let userQuizz = userQuizzes[i];
+        document.querySelector(".quizz-list .quizzes-title-box.my-quizzes").classList.remove("hide");
+        document.querySelector(".quizz-list .quizz-create").classList.add("hide");
+        let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
+        userQuizzesList.innerHTML += 
+        `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+            <img class="img-background" src="${userQuizzes[i].data.image}">
+            <div class="gradient-container">
+            </div>
+            <p class="description">${userQuizzes[i].data.title}</p>
+        </div>`;
+    }
 }
 
 loadPage();
 
 function loadPage () {
     getAllQuizzes();
-
+    loadUserQuizzes();
 }
 
 function getAllQuizzes () {
@@ -51,7 +67,6 @@ function renderAllQuizzes (response) {
 }
 
 function changePages (element) {
-
     if (element.classList.contains("quizz-box")) {
         main.classList.add("hide");
         page.classList.remove("hide");
@@ -63,7 +78,6 @@ function changePages (element) {
     if (element.classList.contains("restart-button")) {
         restartingQuizz();
     }
-
     window.scrollTo(0,0);
 }
 

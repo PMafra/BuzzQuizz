@@ -17,37 +17,21 @@
     </header>
 
     <main class="quizz-list">
-
-        <div class="quizzes-title-box hide">
+        <div class="quizzes-title-box my-quizzes hide">
             <span>Seus Quizzes</span>
             <ion-icon name="add-circle" id="add-icon" onclick="changePages(this)"></ion-icon>
         </div>
-
         <div class="quizzes-container my-quizzes">
-
             <div class="quizz-create">
                 <span>Você não criou nenhum quizz ainda :(</span>
                 <button id="create-button" onclick="changePages(this)">Criar Quizz</button>
             </div>
-            
-            <div class="quizz-box hide" onclick="changePages(this); renderBanner(this)">
-                <img class="img-background" src="">
-                <div class="gradient-container">
-                </div>
-                <p class="description">Alguma descrição do quizz aaaa afojnasdfsan asdofnasdojn asdofnn</p>
-            </div>
-
         </div>
-
         <div class="quizzes-title-box">
             <span>Todos os Quizzes</span>
         </div>
- 
         <div class="quizzes-container all-quizzes">
-            
-
         </div>
-
     </main>
 
     <main class="quizz-page hide">
@@ -56,7 +40,6 @@
         </div>
 
     </div>
-
 
     </main>
     
@@ -96,10 +79,11 @@
                 <img src="">
                 <div class="description"></div>
             </div>
-            <button onclick="quizzCreatedScreen(this)">Acessar Quizz</button>
+            <button class="test-created"onclick="quizzCreatedScreen(this)">Acessar Quizz</button>
             <button class="home-button" onclick="quizzCreatedScreen(this)">Voltar para home</button>
         </div>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="scripts/scriptP.js"></script>

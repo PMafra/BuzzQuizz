@@ -7,12 +7,14 @@ function isURL(str) {
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
 }
+
   function validarHexadecimal(str){
     if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
       return false
     }
     return true
   }
+
 function confirmInformation() {
     const inputs = document.querySelectorAll(".basic-information .input");
     const errors = document.querySelectorAll(".basic-information .error");
@@ -41,7 +43,6 @@ function confirmInformation() {
             return;
         }
     }
-    console.log("Tudo certo!");
     quizzInformation(inputs);
     printAmountOfQuestions(inputs);
     printAmountOfLevels(inputs);
@@ -49,12 +50,14 @@ function confirmInformation() {
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
 }
+
 function quizzInformation(inputs) {
     quizz.title = inputs[0].value;
     quizz.image = inputs[1].value;
     quizz.questions.length = Number(inputs[2].value);
     quizz.levels.length = Number(inputs[3].value);
 }
+
 function printAmountOfQuestions(inputs) {
     const numberOfQuestions = Number(inputs[2].value);
     const questions = document.querySelector(".questions .versatile-box");
@@ -110,6 +113,7 @@ function printAmountOfQuestions(inputs) {
     }
     document.querySelector(".question.closed").classList.remove("closed");
 }
+
 function printAmountOfLevels(inputs) {
     const numberOfLevels = Number(inputs[3].value);
     const levels = document.querySelector(".levels .versatile-box");
@@ -139,11 +143,12 @@ function printAmountOfLevels(inputs) {
     }
     document.querySelector(".level.closed").classList.remove("closed");
 }
+
 function printFinalScreen(inputs) {
     document.querySelector(".success img").src = (inputs[1].value);
     document.querySelector(".success .description").innerHTML = (inputs[0].value);
-
 }
+
 function openQuestion(element) {
     const questions = document.querySelectorAll(".quizz-creation .question");
     for (i = 0 ; i < questions.length ; i++) {
@@ -151,6 +156,7 @@ function openQuestion(element) {
     }
     element.classList.remove("closed");
 }
+
 function openLevel(element) {
     const questions = document.querySelectorAll(".quizz-creation .level");
     for (i = 0 ; i < questions.length ; i++) {
@@ -158,11 +164,10 @@ function openLevel(element) {
     }
     element.classList.remove("closed");
 }
+
 function confirmQuestions() {
     const questionInputs = document.querySelectorAll(".questions .input");
     const questionErrors = document.querySelectorAll(".questions .error");
-    console.log (questionInputs);
-    console.log (questionInputs);
     for(i = 0 ; i < questionInputs.length ; i ++) {
         questionInputs[i].classList.remove("error-background");
         questionErrors[i].classList.add("hide");
@@ -233,6 +238,7 @@ function confirmQuestions() {
     document.querySelector(".questions").classList.add("hide");
     document.querySelector(".levels").classList.remove("hide");
 }
+
 function QuizzQuestions() {
     for(i=0 ; i < quizz.questions.length ; i ++) {
         quizz.questions[i] = {
@@ -327,7 +333,6 @@ function confirmLevels() {
         return;
     }
     quizzLevels();
-    console.log(quizz);
     createQuizz();
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
@@ -343,27 +348,36 @@ function quizzLevels() {
 		}
     }
 }
+
 function quizzCreatedScreen(element) {
     if (element.classList.contains("home-button")) {
         location.reload();
     }
     else {
-        location.reload();
+        changePages(this);
+        renderBanner(this);
+        getQuizz(this);
     }
 }
+
 function createQuizz() {
     const promise = axios.post(SERVER_URL_QUIZZES, quizz);
     promise.then(sendQuizz);
     promise.catch(incorrectQuizz);
 }
+
 function sendQuizz(response) {
     const newQuizz = response;
+   // document.querySelector(".success .test-created").id = newQuizz.answers.data.id;
     console.log(response);
     addToDataStorage(newQuizz)
 }
+
 function incorrectQuizz(error) {
     console.log(error);
+    alert("Ocorreu um erro, tente novamente.");
 }
+
 function addToDataStorage(newQuizz) {
     userQuizzes.push(newQuizz);
     localStorage.setItem("list", JSON.stringify(userQuizzes));
