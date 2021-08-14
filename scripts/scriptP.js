@@ -38,8 +38,6 @@ function renderUserQuizzes (userQuizzes) {
     }
 }
 
-
-
 loadPage();
 
 function loadPage () {
