@@ -80,7 +80,7 @@ function printAmountOfQuestions(inputs) {
                     <div class = "error hide ">Você precisa criar a resposta correta.</div>
                     <input class="input correct necessary image" placeholder="URL da imagem" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem'"/>
-                    <div class = "error hide ">Insira um URl de imagem válido.</div>
+                    <div class = "error hide ">Insira um URL de imagem válido.</div>
                     <div class="divider"></div>
                     <div class="section-title">Respostas incorretas</div>
                     <div class="divisor"></div>
@@ -89,21 +89,21 @@ function printAmountOfQuestions(inputs) {
                     <div class = "error hide ">Você precisa criar ao menos uma resposta incorreta.</div>
                     <input class="input incorrect necessary image" placeholder="URL da imagem 1" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 1'"/>
-                    <div class = "error hide ">Insira um URl de imagem válido.</div>
+                    <div class = "error hide ">Insira um URL de imagem válido.</div>
                     <div class="divider"></div>
                     <input class="input incorrect answer unnecessary third" placeholder="Resposta incorreta 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 2'"/>
                     <div class = "error hide ">Essa resposta precisa de um texto.</div>
                     <input class="input incorrect unnecessary third image" placeholder="URL da imagem 2" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 2'"/>
-                    <div class = "error hide ">Insira um URl de imagem válido.</div>
+                    <div class = "error hide ">Insira um URL de imagem válido.</div>
                     <div class="divider"></div>
                     <input class="input incorrect answer unnecessary forth" placeholder="Resposta incorreta 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta incorreta 3'"/>
                     <div class = "error hide ">Essa resposta precisa de um texto.</div>
                     <input class="input incorrect unnecessary forth image" placeholder="URL da imagem 3" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'URL da imagem 3'"/>
-                    <div class = "error hide ">Insira um URl de imagem válido.</div>
+                    <div class = "error hide ">Insira um URL de imagem válido.</div>
                 </div>
             </div>
         `;
@@ -129,7 +129,7 @@ function printAmountOfLevels(inputs) {
                     <div class = "error hide">Escolha valores entre 0 e 100 para a porcentagem de acerto.</div>
                     <input class="input image" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Resposta correta'"/>
-                    <div class = "error hide">Insira um URl de imagem válido.</div>
+                    <div class = "error hide">Insira um URL de imagem válido.</div>
                     <input class="input description" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Descrição do nível'"/>
                     <div class = "error hide">Descrição de nível deve ter no mínimo 30 caracteres.</div>
