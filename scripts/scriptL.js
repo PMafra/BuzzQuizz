@@ -10,9 +10,9 @@ function isURL(str) {
 
   function validarHexadecimal(str){
     if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
 function confirmInformation() {
@@ -132,7 +132,7 @@ function printAmountOfLevels(inputs) {
                     onblur="this.placeholder = '% de acerto mínima'"/>
                     <div class = "error hide">Escolha valores entre 0 e 100 para a porcentagem de acerto.</div>
                     <input class="input image" placeholder="URL da imagem do nível" onfocus="this.placeholder = ''"
-                    onblur="this.placeholder = 'Resposta correta'"/>
+                    onblur="this.placeholder = 'URL da imagem do nível'"/>
                     <div class = "error hide">Insira um URL de imagem válido.</div>
                     <input class="input description" placeholder="Descrição do nível" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Descrição do nível'"/>

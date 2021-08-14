@@ -4,6 +4,9 @@ const main = document.querySelector(".quizz-list");
 const page = document.querySelector(".quizz-page");
 const creation = document.querySelector(".quizz-creation");
 let userQuizzes = [];
+let userQuizzesIds = [];
+let serverQuizzesIds = [];
+let userQuizzesIdsNotInServer = [];
 let quizz = {
 	title: "",
 	image: "",
@@ -18,31 +21,63 @@ function loadUserQuizzes() {
         return;
     }
     userQuizzes = userQuizzesForPrinting;
+
+    for (let i = 0; i < userQuizzes.length; i++) {
+        userQuizzesIds.push(userQuizzes[i].data.id);
+    }
+
     console.log(userQuizzes);
     renderUserQuizzes(userQuizzes);
 }
 
+function isMyQuizzStillInServer () {
+
+    let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+    allQuizzes.then(compareQuizzesToServer);
+    allQuizzes.catch(function (error) {console.log(error)});
+}
+
+function compareQuizzesToServer (response) {
+
+    for (let i = 0; i < response.data.length; i++) {
+        serverQuizzesIds.push(response.data[i].id);
+    }
+    for (let i = 0; i < userQuizzesIds.length; i++) {
+        if (serverQuizzesIds.indexOf(userQuizzesIds[i]) === -1) {
+            console.log(userQuizzesIds[i] + " não está no servidor");
+            userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
+        }
+    }
+    console.log(userQuizzesIdsNotInServer);
+}
+
+
 function renderUserQuizzes (userQuizzes) {
+    isMyQuizzStillInServer();
+
     for (let i = 0; i < userQuizzes.length; i++) {
-        let userQuizz = userQuizzes[i];
-        document.querySelector(".quizz-list .quizzes-title-box.my-quizzes").classList.remove("hide");
-        document.querySelector(".quizz-list .quizz-create").classList.add("hide");
-        let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
-        userQuizzesList.innerHTML += 
-        `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
-            <img class="img-background" src="${userQuizzes[i].data.image}">
-            <div class="gradient-container">
-            </div>
-            <p class="description">${userQuizzes[i].data.title}</p>
-        </div>`;
+        if (userQuizzesIdsNotInServer.includes(userQuizzes[i].data.id)) {
+            continue;
+        } else{
+            document.querySelector(".quizz-list .quizzes-title-box.my-quizzes").classList.remove("hide");
+            document.querySelector(".quizz-list .quizz-create").classList.add("hide");
+            let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
+            userQuizzesList.innerHTML += 
+            `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+                <img class="img-background" src="${userQuizzes[i].data.image}">
+                <div class="gradient-container">
+                </div>
+                <p class="description">${userQuizzes[i].data.title}</p>
+            </div>`;
+        }
     }
 }
 
 loadPage();
 
 function loadPage () {
-    getAllQuizzes();
     loadUserQuizzes();
+    getAllQuizzes();
 }
 
 function getAllQuizzes () {
@@ -54,15 +89,19 @@ function getAllQuizzes () {
 
 function renderAllQuizzes (response) {
     console.log(response);
-    for (let i = 0; i < response.data.length; i++) {
-        let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
-        allQuizzesContainer.innerHTML += 
-        `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
-            <img class="img-background" src="${response.data[i].image}">
-            <div class="gradient-container">
-            </div>
-            <p class="description">${response.data[i].title}</p>
-        </div>`;
+    for (let i = 0; i < response.data.length; i++) {  
+        if (userQuizzesIds.includes(response.data[i].id)) {
+            continue;
+        } else {
+            let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
+            allQuizzesContainer.innerHTML += 
+            `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+                <img class="img-background" src="${response.data[i].image}">
+                <div class="gradient-container">
+                </div>
+                <p class="description">${response.data[i].title}</p>
+            </div>`;
+        }
     }
 }
 
@@ -317,6 +356,12 @@ function scrollToNext (element) {
         });
     }
 }
+
+
+
+
+
+
 
 
 
