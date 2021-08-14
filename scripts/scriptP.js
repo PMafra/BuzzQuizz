@@ -52,7 +52,6 @@ function renderAllQuizzes (response) {
 
 function changePages (element) {
 
-
     if (element.classList.contains("quizz-box")) {
         main.classList.add("hide");
         page.classList.remove("hide");
@@ -61,18 +60,33 @@ function changePages (element) {
         main.classList.add("hide");
         creation.classList.remove("hide");
     }
-    /*
-    if (element.classList.contains("home-button")) {
-        main.classList.remove("hide");
-        page.classList.add("hide");
-    }
-    */
     if (element.classList.contains("restart-button")) {
-
+        restartingQuizz();
     }
-    
 
     window.scrollTo(0,0);
+}
+
+const removeClass = (element, className) => {
+    if (element.classList.contains(className)){
+        element.classList.remove(className);
+    }
+}
+
+const restartingQuizz = () => {
+    let resetingAnswersAndResult = document.querySelectorAll(".reset, .color-green, .color-red, .blurred-background");
+
+    resetingAnswersAndResult.forEach(element => {
+        if (element.classList.contains("reset")) {
+            element.remove();
+        }
+        removeClass(element, "color-green");
+        removeClass(element, "color-red");
+        removeClass(element, "blurred-background");
+    });
+
+    questionsAnswered = totalQuestions;
+    numOfHits = 0;
 }
 
 function refreshPage () {
@@ -106,16 +120,30 @@ function renderQuizzQuestions (response) {
     console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
         if (selectedQuizzId === response.data[i].id) {
+            console.log(response.data[i].levels);
             for (let j = 0; j < response.data[i].questions.length; j++) {
-                page.innerHTML +=
-                `<div class="question-container" id="q${j}">
-                    <div class="question-box">
-                        <span class="question">${response.data[i].questions[j].title}</span>
-                    </div>
-                    <div class="answers-box">
-                    </div>
-                </div>`;
-            
+
+                let questionBoxColor = response.data[i].questions[j].color;
+                if (isTooLightYIQ(questionBoxColor.replace("#",""))) {
+                    page.innerHTML +=
+                    `<div class="question-container" id="q${j}">
+                        <div class="question-box" style="background-color: ${response.data[i].questions[j].color};">
+                            <span class="question" style="color: #000000;">${response.data[i].questions[j].title}</span>
+                        </div>
+                        <div class="answers-box">
+                        </div>
+                    </div>`;
+                } else {
+                    page.innerHTML +=
+                    `<div class="question-container" id="q${j}">
+                        <div class="question-box" style="background-color: ${response.data[i].questions[j].color};">
+                            <span class="question">${response.data[i].questions[j].title}</span>
+                        </div>
+                        <div class="answers-box">
+                        </div>
+                    </div>`;
+                }
+                
                 for (let k = 0; k < response.data[i].questions[j].answers.length; k++) {
                     let questionPrinted = document.getElementById(`q${j}`);
                     questionPrinted.lastElementChild.innerHTML += 
@@ -124,12 +152,32 @@ function renderQuizzQuestions (response) {
                             <span class="legend">${response.data[i].questions[j].answers[k].text}</span>
                         </div>`;
                 }
+
+                let answersBox = document.getElementById(`q${j}`).lastElementChild;
+                shuffleDivs(answersBox);
                 
             questionsAnswered ++;
             totalQuestions++;
             }      
         }    
     }
+}
+
+function isTooLightYIQ(hexcolor){
+    let r = parseInt(hexcolor.substr(0,2),16);
+    let g = parseInt(hexcolor.substr(2,2),16);
+    let b = parseInt(hexcolor.substr(4,2),16);
+    let yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return yiq >= 128;
+}
+
+const shuffleDivs = parent => {
+    let divs = parent.children;
+    let frag = document.createDocumentFragment();
+    while (divs.length) {
+        frag.appendChild(divs[Math.floor(Math.random() * divs.length)]);
+    }
+    parent.appendChild(frag);
 }
 
 let siblings;
@@ -148,7 +196,6 @@ function getSiblings (element) {
 };
 
 function selectOption (element) {
-    console.log(element.parentElement.nextElementSibling);
     if (element.lastElementChild.classList.contains("color-green") || element.lastElementChild.classList.contains("color-red")) {
         return;
     }
@@ -195,15 +242,28 @@ function isFinished (remainingQuestions) {
 }
 
 function renderResult(response) {
+    let listOfLevels = [];
+    let resultValue;
     let result;
-    
+
     for (let i = 0; i < response.data.length; i++) {
         if (selectedQuizzId === response.data[i].id){
+
             for (let j = 0; j < response.data[i].levels.length; j++) {
-                console.log(Math.round((numOfHits/totalQuestions)*100));
-                if (Math.round((numOfHits/totalQuestions)*100) >= response.data[i].levels[j].minValue) {
+                listOfLevels.push(response.data[i].levels[j].minValue);
+            }
+            listOfLevels.sort();
+
+            for (let j = 0; j < listOfLevels.length; j++) {
+                if (Math.round((numOfHits/totalQuestions)*100) >= listOfLevels[j]) {
+                    resultValue = listOfLevels[j];
+                }
+            }
+
+            for (let j = 0; j < response.data[i].levels.length; j++) {
+                if (response.data[i].levels[j].minValue === resultValue) {
                     result = 
-                        `<div class="quizz-result question-container">
+                        `<div class="quizz-result question-container reset">
                             <div class="question-box">
                                 <span class="question">${response.data[i].levels[j].title}</span>
                             </div>
@@ -212,9 +272,9 @@ function renderResult(response) {
                                 <span class="legend">${response.data[i].levels[j].text}</span>
                             </div>
                         </div>
-                        <button class="restart-button" onclick="changePages(this)">Reiniciar Quizz</button>
-                        <button class="home-button" onclick="refreshPage()">Voltar para home</button>`;
-                }           
+                        <button class="restart-button reset" onclick="changePages(this)">Reiniciar Quizz</button>
+                        <button class="home-button reset" onclick="refreshPage()">Voltar para home</button>`; 
+                }                          
             }
             console.log(result);
             page.innerHTML += result;        
@@ -227,13 +287,13 @@ function scrollToNext (element) {
     let scrollResult = document.querySelector(".quizz-result");
     if (scrollNextOne !== null) {
         scrollNextOne.scrollIntoView({
-            behavior: 'auto',
+            behavior: 'smooth',
             block: 'center',
             inline: 'center'
         });
     } else {
         scrollResult.scrollIntoView({
-            behavior: 'auto',
+            behavior: 'smooth',
             block: 'center',
             inline: 'center'
         });
