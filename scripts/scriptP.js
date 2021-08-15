@@ -27,7 +27,7 @@ function loadUserQuizzes() {
     }
 
     console.log(userQuizzes);
-    renderUserQuizzes(userQuizzes);
+    isMyQuizzStillInServer();
 }
 
 function isMyQuizzStillInServer () {
@@ -49,16 +49,17 @@ function compareQuizzesToServer (response) {
         }
     }
     console.log(userQuizzesIdsNotInServer);
+    renderUserQuizzes(userQuizzes);
 }
 
 
 function renderUserQuizzes (userQuizzes) {
-    isMyQuizzStillInServer();
-
+    console.log(userQuizzesIdsNotInServer);
     for (let i = 0; i < userQuizzes.length; i++) {
-        if (userQuizzesIdsNotInServer.includes(userQuizzes[i].data.id)) {
+        if(userQuizzesIdsNotInServer.includes(userQuizzes[i].data.id)) {
             continue;
-        } else{
+        }
+        else {
             document.querySelector(".quizz-list .quizzes-title-box.my-quizzes").classList.remove("hide");
             document.querySelector(".quizz-list .quizz-create").classList.add("hide");
             let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
