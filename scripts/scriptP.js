@@ -227,6 +227,7 @@ function renderBanner (element) {
 let selectedQuizzId;
 
 function getQuizz (element) {
+    
     selectedQuizzId = Number(element.id);
     console.log(element.id);
 
