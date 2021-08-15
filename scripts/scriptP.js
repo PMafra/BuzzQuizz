@@ -26,6 +26,8 @@ function loadUserQuizzes() {
         userQuizzesIds.push(userQuizzes[i].data.id);
     }
 
+    console.log(userQuizzesIds);
+
     console.log(userQuizzes);
     renderUserQuizzes(userQuizzes);
 }
@@ -42,11 +44,14 @@ function compareQuizzesToServer (response) {
     for (let i = 0; i < response.data.length; i++) {
         serverQuizzesIds.push(response.data[i].id);
     }
+    console.log(serverQuizzesIds);
     for (let i = 0; i < userQuizzesIds.length; i++) {
-        if (serverQuizzesIds.indexOf(userQuizzesIds[i]) === -1) {
+        if (serverQuizzesIds.includes(userQuizzesIds[i])) {
+            continue;
+        } else {
             console.log(userQuizzesIds[i] + " não está no servidor");
             userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
-        }
+        }   
     }
     console.log(userQuizzesIdsNotInServer);
 }
@@ -74,7 +79,7 @@ function renderUserQuizzes (userQuizzes) {
 }
 
 loadPage();
-
+console.log(userQuizzesIdsNotInServer);
 function loadPage () {
     loadUserQuizzes();
     getAllQuizzes();
@@ -356,16 +361,3 @@ function scrollToNext (element) {
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
