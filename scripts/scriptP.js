@@ -6,6 +6,9 @@ const creation = document.querySelector(".quizz-creation");
 const loadingPage = document.querySelector(".loading-page");
 
 let userQuizzes = [];
+let quizzToDeletePosition;
+let quizzToDeleteId;
+let quizzToDeleteKey;
 let userQuizzesIds = [];
 let serverQuizzesIds = [];
 let userQuizzesIdsNotInServer = [];
@@ -60,6 +63,40 @@ function compareQuizzesToServer (response) {
 
 let details = document.querySelector(".quizzes-not-in-server ul");
 
+function confirmDelete(selectedQuizz) {
+    quizzToDeleteId = Number(selectedQuizz.id);
+    console.log(quizzToDeleteId);
+    console.log(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`);
+    console.log(userQuizzes[1].data.key);
+    for (let i=0 ; i<userQuizzes.length ; i++) {
+        if (quizzToDeleteId === userQuizzes[i].data.id) {
+            quizzToDeleteKey = userQuizzes[i].data.key;
+            quizzToDeletePosition = i;
+            console.log("tchau");
+        }
+    }
+    console.log(quizzToDeletePosition)
+    console.log(userQuizzes[2].data.key);
+    if (confirm("Você realmente deseja remover o quizz selecionado?")) {
+        console.log("foi");
+        requireQuizzRemoval();
+    }
+    else {
+        location.reload();
+    }
+}
+
+function requireQuizzRemoval() {
+    let promise = axios.delete(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`, {headers:{ "Secret-Key": quizzToDeleteKey}});
+    promise.then(deleteQuizz);
+    promise.catch(function (error) {console.log(error)});
+}
+
+function deleteQuizz(response) {
+    alert("Seu quizz foi deletado!");
+    location.reload();
+}
+
 function renderUserQuizzes (userQuizzes) {
     
     for (let i = 0; i < userQuizzes.length; i++) {
@@ -74,18 +111,24 @@ function renderUserQuizzes (userQuizzes) {
             document.querySelector(".quizz-list .quizz-create").classList.add("hide");
             let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
             userQuizzesList.innerHTML += 
-            `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+            `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box" onclick="startingQuizz(this)">
                 <img class="img-background" src="${userQuizzes[i].data.image}">
                 <div class="gradient-container">
                 </div>
                 <p class="description">${userQuizzes[i].data.title}</p>
+                <div class="buttons-holder">
+                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon id="${userQuizzes[i].data.id}" onclick="confirmDelete(this)" name="trash-outline"></ion-icon>
+                </div>
             </div>`;
         }
     }
 }
 
 loadPage();
-
+function coco() {
+    console.log("coco");
+}
 function loadPage () {
     loadUserQuizzes();
     getAllQuizzes();

@@ -363,7 +363,6 @@ function sendQuizz(response) {
     loadingPage.classList.add("hide");
     const newQuizz = response;
     console.log(response);
-    document.querySelector(".success .test-created").id = newQuizz.data.id;
     addToDataStorage(newQuizz);
 }
 

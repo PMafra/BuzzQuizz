@@ -15,21 +15,19 @@
     <header class="top-bar">
         <h1 onclick="refreshPage()">BuzzQuizz</h1>
     </header>
+    <div class="loading-page hide">
+        <img src="https://64.media.tumblr.com/b1411860d0d6218c3363f62a8a59f888/tumblr_p5yyv3AEvI1wnvvwno1_1280.gifv" class="smeagol">
+        <div class="loading">
+            <span>Carregando</span>
+            <img src="https://cdn.dribbble.com/users/1321959/screenshots/5372112/09_precious_dribbble.gif">
+        </div>
+    </div>
 
     <main class="quizz-list">
         <details class="quizzes-not-in-server">
             <summary>Clique para ver seus Quizzes que não estão mais em nosso servidor</summary>
             <ul></ul>
         </details>
-
-        <div class="loading-page hide">
-            <img src="https://64.media.tumblr.com/b1411860d0d6218c3363f62a8a59f888/tumblr_p5yyv3AEvI1wnvvwno1_1280.gifv" class="smeagol">
-            <div class="loading">
-                <span>Carregando</span>
-                <img src="https://cdn.dribbble.com/users/1321959/screenshots/5372112/09_precious_dribbble.gif">
-            </div>
-        </div>
-
         <div class="quizzes-title-box my-quizzes hide">
             <span>Seus Quizzes</span>
             <ion-icon name="add-circle" id="add-icon" onclick="changePages(this)"></ion-icon>
