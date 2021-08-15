@@ -344,25 +344,26 @@ function quizzLevels() {
     }
 }
 
-function quizzCreatedScreen(element) {
-    if (element.classList.contains("home-button")) {
-        location.reload();
-    }
-    else {
-        location.reload();
-    }
+function visualizeQuizz(element) {
+   changePages(element);
+   let quizzSucessDiv = document.querySelector(".sucess .image-box");
+   renderBanner(quizzSucessDiv);
+  // selectedQuizzId = ;
+   getQuizz();
 }
 
 function createQuizz() {
     const promise = axios.post(SERVER_URL_QUIZZES, quizz);
+    loadingPage.classList.remove("hide");
     promise.then(sendQuizz);
     promise.catch(incorrectQuizz);
 }
 
 function sendQuizz(response) {
+    loadingPage.classList.add("hide");
     const newQuizz = response;
-    document.querySelector(".success .test-created").id = newQuizz.answers.data.id;
     console.log(response);
+    document.querySelector(".success .test-created").id = newQuizz.data.id;
     addToDataStorage(newQuizz);
 }
 

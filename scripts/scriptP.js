@@ -3,6 +3,8 @@ const SERVER_URL_QUIZZES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/b
 const main = document.querySelector(".quizz-list");
 const page = document.querySelector(".quizz-page");
 const creation = document.querySelector(".quizz-creation");
+const loadingPage = document.querySelector(".loading-page");
+
 let userQuizzes = [];
 let userQuizzesIds = [];
 let serverQuizzesIds = [];
@@ -33,12 +35,13 @@ function loadUserQuizzes() {
 function isMyQuizzStillInServer () {
 
     let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+    loadingPage.classList.remove("hide");
     allQuizzes.then(compareQuizzesToServer);
     allQuizzes.catch(function (error) {console.log(error)});
 }
 
 function compareQuizzesToServer (response) {
-
+    loadingPage.classList.add("hide");
     for (let i = 0; i < response.data.length; i++) {
         serverQuizzesIds.push(response.data[i].id);
     }
@@ -90,12 +93,13 @@ function loadPage () {
 
 function getAllQuizzes () {
     let allQuizzes = axios.get(SERVER_URL_QUIZZES);
-
+    loadingPage.classList.remove("hide");
     allQuizzes.then(renderAllQuizzes);
     allQuizzes.catch(function (error) {console.log(error)});
 }
 
 function renderAllQuizzes (response) {
+    loadingPage.classList.add("hide");
     console.log(response);
     for (let i = 0; i < response.data.length; i++) {  
         if (userQuizzesIds.includes(response.data[i].id)) {
@@ -103,7 +107,7 @@ function renderAllQuizzes (response) {
         } else {
             let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
             allQuizzesContainer.innerHTML += 
-            `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="changePages(this); renderBanner(this); getQuizz(this)">
+            `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="startingQuizz(this)">
                 <img class="img-background" src="${response.data[i].image}">
                 <div class="gradient-container">
                 </div>
@@ -111,6 +115,12 @@ function renderAllQuizzes (response) {
             </div>`;
         }
     }
+}
+
+function startingQuizz (element) {
+    getQuizz(element);
+    changePages(element);
+    renderBanner(element);
 }
 
 function changePages (element) {
@@ -124,6 +134,10 @@ function changePages (element) {
     }
     if (element.classList.contains("restart-button")) {
         restartingQuizz();
+    }
+    if (element.classList.contains("test-created")) {
+        page.classList.remove("hide");
+        creation.classList.add("hide");
     }
     window.scrollTo(0,0);
 }
@@ -174,6 +188,7 @@ function getQuizz (element) {
     console.log(element.id);
 
     let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+    loadingPage.classList.remove("hide");
     allQuizzes.then(renderQuizzQuestions);
     allQuizzes.catch(function (error) {console.log(error)});
 }
@@ -182,6 +197,7 @@ let questionsAnswered = 0;
 let totalQuestions = 0;
 
 function renderQuizzQuestions (response) {
+    loadingPage.classList.add("hide");
     console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
         if (selectedQuizzId === response.data[i].id) {
@@ -300,6 +316,7 @@ function isFinished (remainingQuestions) {
     if (remainingQuestions === 0) {
 
         let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+        loadingPage.classList.remove("hide");
         allQuizzes.then(renderResult);
         allQuizzes.catch(function (error) {console.log(error)});       
     }
@@ -307,6 +324,7 @@ function isFinished (remainingQuestions) {
 }
 
 function renderResult(response) {
+    loadingPage.classList.add("hide");
     let listOfLevels = [];
     let resultValue;
     let result;
