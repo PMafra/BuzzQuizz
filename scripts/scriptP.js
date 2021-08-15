@@ -25,10 +25,8 @@ function loadUserQuizzes() {
     for (let i = 0; i < userQuizzes.length; i++) {
         userQuizzesIds.push(userQuizzes[i].data.id);
     }
-
-    console.log(userQuizzesIds);
-
     console.log(userQuizzes);
+    console.log("Os Ids dos seus quizzes são: " + userQuizzesIds);
     isMyQuizzStillInServer();
 }
 
@@ -44,7 +42,7 @@ function compareQuizzesToServer (response) {
     for (let i = 0; i < response.data.length; i++) {
         serverQuizzesIds.push(response.data[i].id);
     }
-    console.log(serverQuizzesIds);
+
     for (let i = 0; i < userQuizzesIds.length; i++) {
         if (serverQuizzesIds.includes(userQuizzesIds[i])) {
             continue;
@@ -53,15 +51,19 @@ function compareQuizzesToServer (response) {
             userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
         }   
     }
-    console.log(userQuizzesIdsNotInServer);
+    
     renderUserQuizzes(userQuizzes);
 }
 
+let details = document.querySelector(".quizzes-not-in-server ul");
 
 function renderUserQuizzes (userQuizzes) {
-    console.log(userQuizzesIdsNotInServer);
+    
     for (let i = 0; i < userQuizzes.length; i++) {
         if(userQuizzesIdsNotInServer.includes(userQuizzes[i].data.id)) {
+            let dateOfCreation = userQuizzes[i].data.createdAt.split("T")[0];
+            let timeOfCreation = userQuizzes[i].data.createdAt.split("T")[1].split(".")[0];
+            details.innerHTML += `<li>Nome: " <strong>${userQuizzes[i].data.title}</strong> "<br>Data de criação: ${dateOfCreation}<br> Horário de criação: ${timeOfCreation}</li>`;
             continue;
         }
         else {
@@ -80,7 +82,7 @@ function renderUserQuizzes (userQuizzes) {
 }
 
 loadPage();
-console.log(userQuizzesIdsNotInServer);
+
 function loadPage () {
     loadUserQuizzes();
     getAllQuizzes();
