@@ -344,12 +344,11 @@ function quizzLevels() {
     }
 }
 
-function visualizeQuizz(element) {
-   changePages(element);
-   let quizzSucessDiv = document.querySelector(".sucess .image-box");
-   renderBanner(quizzSucessDiv);
-  // selectedQuizzId = ;
-   getQuizz();
+function visualizeQuizz (element) {
+    let lastCreatedQuizz = document.querySelector(".quizz-list .quizzes-container.my-quizzes").lastElementChild;
+    changePages(element);
+    renderBanner(lastCreatedQuizz);
+    getQuizz(lastCreatedQuizz);
 }
 
 function createQuizz() {
@@ -360,10 +359,10 @@ function createQuizz() {
 }
 
 function sendQuizz(response) {
+    loadPage();
     loadingPage.classList.add("hide");
     const newQuizz = response;
     console.log(response);
-    document.querySelector(".success .test-created").id = newQuizz.data.id;
     addToDataStorage(newQuizz);
 }
 
