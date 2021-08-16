@@ -48,7 +48,12 @@ body {
     max-width: 1051px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+    gap: 13px;
+}
+
+.quizzes-container.all-quizzes {
+    padding-bottom: 80px;
 }
 
 .quizz-list 
@@ -127,6 +132,7 @@ body {
     position: relative;
     border-radius: 6px;
     cursor: pointer;
+    justify-content: flex-start;
 }
 
 .quizz-list .quizzes-container 
