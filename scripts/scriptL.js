@@ -417,7 +417,6 @@ function createQuizz() {
 }
 
 function sendQuizz(response) {
-    loadPage();
     loadingPage.classList.add("hide");
     const newQuizz = response;
     console.log(response);
@@ -427,4 +426,5 @@ function sendQuizz(response) {
 function addToDataStorage(newQuizz) {
     userQuizzes.push(newQuizz);
     localStorage.setItem("list", JSON.stringify(userQuizzes));
+    loadPage();
 }

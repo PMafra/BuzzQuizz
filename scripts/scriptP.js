@@ -131,9 +131,7 @@ function startQuizzByEvent(e) {
 }
 
 loadPage();
-function coco() {
-    console.log("coco");
-}
+
 function loadPage () {
     loadUserQuizzes();
     getAllQuizzes();
