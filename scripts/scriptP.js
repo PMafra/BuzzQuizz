@@ -5,12 +5,14 @@ const page = document.querySelector(".quizz-page");
 const creation = document.querySelector(".quizz-creation");
 const loadingPage = document.querySelector(".loading-page");
 let details = document.querySelector(".quizzes-not-in-server ul");
-
 let isEditing = false;
-
 let userQuizzes = [];
 let quizzToDeleteId;
 let quizzToDeleteKey;
+let quizzToEdit;
+let quizzToEditPosition;
+let quizzToEditId;
+let quizzToEditKey;
 let userQuizzesIds = [];
 let serverQuizzesIds = [];
 let userQuizzesIdsNotInServer = [];
@@ -64,7 +66,7 @@ function compareQuizzesToServer (response) {
 }
 
 function confirmDelete(selectedQuizz) {
-    quizzToDeleteId = Number(selectedQuizz.id);
+    quizzToDeleteId = Number(selectedQuizz.parentNode.parentNode.id);
     for (let i=0 ; i<userQuizzes.length ; i++) {
         if (quizzToDeleteId === userQuizzes[i].data.id) {
             quizzToDeleteKey = userQuizzes[i].data.key;
@@ -99,14 +101,14 @@ function renderUserQuizzes (userQuizzes) {
             document.querySelector(".quizz-list .quizz-create").classList.add("hide");
             let userQuizzesList = document.querySelector(".quizz-list .quizzes-container.my-quizzes");
             userQuizzesList.innerHTML +=
-            `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box teste">
+            `<div id="${userQuizzes[i].data.id}" class="quizz-layout quizz-box user-quizz">
                 <img class="img-background" src="${userQuizzes[i].data.image}">
                 <div class="gradient-container" >
                 </div>
                 <p class="description">${userQuizzes[i].data.title}</p>
                 <div class="buttons-holder">
-                <ion-icon name="create-outline"></ion-icon>
-                <ion-icon class="teste" id="${userQuizzes[i].data.id}" onclick="confirmDelete(this)" name="trash-outline"></ion-icon>
+                <ion-icon class="edit" onclick="editQuizz(this)" name="create-outline"></ion-icon>
+                <ion-icon onclick="confirmDelete(this)" name="trash-outline"></ion-icon>
                 </div>
             </div>`;
         }
@@ -114,11 +116,12 @@ function renderUserQuizzes (userQuizzes) {
     if (details.innerHTML !== "") {
         document.querySelector(".quizzes-not-in-server").classList.remove("hide");
     }
-    let testando = document.querySelectorAll(".quizz-box.teste");
+    let testando = document.querySelectorAll(".quizz-box.user-quizz");
     for (i=0 ; i < testando.length ; i++) {
         testando[i].addEventListener('click', startQuizzByEvent);
     }
 }
+
 function startQuizzByEvent(e) {
     if(e.path[0].classList.contains("description") || e.path[0].classList.contains("gradient-container")) {
         let selectedQuizz = e.path[1];
@@ -152,7 +155,7 @@ function renderAllQuizzes (response) {
         } else {
             let allQuizzesContainer = document.querySelector(".quizz-list .all-quizzes");
             allQuizzesContainer.innerHTML +=
-            `<div id="${response.data[i].id}" class="quizz-layout quizz-box" onclick="startingQuizz(this)">
+            `<div id="${response.data[i].id}" class="quizz-layout quizz-box general" onclick="startingQuizz(this)">
                 <img class="img-background" src="${response.data[i].image}">
                 <div class="gradient-container">
                 </div>
@@ -182,6 +185,10 @@ function changePages (element) {
     if (element.classList.contains("test-created")) {
         page.classList.remove("hide");
         creation.classList.add("hide");
+    }
+    if (element.classList.contains("edit")) {
+        creation.classList.remove("hide");
+        main.classList.add("hide");
     }
     window.scrollTo(0,0);
 }

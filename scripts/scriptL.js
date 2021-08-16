@@ -8,12 +8,49 @@ function isURL(str) {
     return !!pattern.test(str);
 }
 
-  function validarHexadecimal(str){
-    if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
-      return false;
+function validarHexadecimal(str){
+if(!/^#[a-fA-F0-9]{6}$/i.test(str)){
+    return false;
+}
+return true;
+}
+
+function editQuizz(selectedQuizz) {
+    isEditing = true;
+    console.log("poops")
+    quizzToEditId = Number(selectedQuizz.parentNode.parentNode.id);
+    for (let i=0 ; i<userQuizzes.length ; i++) {
+        if (quizzToEditId === userQuizzes[i].data.id) {
+            quizzToEdit = userQuizzes[i];
+            quizzToEditKey = userQuizzes[i].data.key;
+            quizzToEditPosition = i;
+        }
     }
-    return true;
-  }
+    console.log(quizzToEditId);
+    console.log(quizzToEditKey);
+    console.log(quizzToEdit);
+    console.log(selectedQuizz);
+    fillBasicInformationToEdit(selectedQuizz, quizzToEdit);
+}
+function fillBasicInformationToEdit(selectedQuizz, quizzToEdit) {
+    const inputs = document.querySelectorAll(".basic-information .input");
+    inputs[0].value = quizzToEdit.data.title;
+    inputs[1].value = quizzToEdit.data.image;
+    inputs[2].value = quizzToEdit.data.questions.length;
+    inputs[3].value = quizzToEdit.data.levels.length;
+    printAmountOfQuestions(inputs);
+    fillQuestionsToEdit(quizzToEdit)
+    printAmountOfLevels(inputs);
+    fillLevelsToEdit(quizzToEdit)
+    changePages(selectedQuizz);
+}
+function fillQuestionsToEdit(quizzToEdit) {
+    for (i=0 ; i < quizzToEdit.data.questions.length ; i++) {
+    }
+}
+
+function fillLevelsToEdit() {
+}
 
 function confirmInformation() {
     const inputs = document.querySelectorAll(".basic-information .input");
@@ -44,8 +81,10 @@ function confirmInformation() {
         }
     }
     quizzInformation(inputs);
-    printAmountOfQuestions(inputs);
-    printAmountOfLevels(inputs);
+    if (isEditing === false) {
+        printAmountOfQuestions(inputs);
+        printAmountOfLevels(inputs);
+    }
     printFinalScreen(inputs)
     document.querySelector(".basic-information").classList.add("hide");
     document.querySelector(".questions").classList.remove("hide");
@@ -224,11 +263,6 @@ function confirmQuestions() {
             }
         }
     }
-    // for(i = 0 ; i < questions.length ; i ++) {
-    //     if (questions[i].getElementsByClassName("error")) {
-    //         questions[i].classList.add("error-background");
-    //     }
-    // }
     for(i = 0 ; i < questionInputs.length ; i ++) {
         if (questionInputs[i].classList.contains("error-background")) {
             return;
@@ -333,7 +367,13 @@ function confirmLevels() {
         return;
     }
     quizzLevels();
-    createQuizz();
+    if (isEditing === false) {
+        createQuizz();
+    }
+    if (isEditing === true) {
+        confirmEdition();
+        isEditing = false;
+    }
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
 }
@@ -356,11 +396,24 @@ function visualizeQuizz (element) {
     getQuizz(lastCreatedQuizz);
 }
 
+function confirmEdition() {
+    const promise = axios.put(SERVER_URL_QUIZZES + `/${quizzToEditId}`,quizz,{headers:{ "Secret-Key": quizzToEditKey}});
+    promise.then(sendEdition);
+    promise.catch(function (error) {console.log(error)});;
+
+}
+
+function sendEdition(response) {
+    console.log(response);
+    userQuizzes[quizzToEditPosition] = response;
+    localStorage.setItem("list", JSON.stringify(userQuizzes));
+}
+
 function createQuizz() {
     const promise = axios.post(SERVER_URL_QUIZZES, quizz);
     loadingPage.classList.remove("hide");
     promise.then(sendQuizz);
-    promise.catch(incorrectQuizz);
+    promise.catch(function (error) {console.log(error)});
 }
 
 function sendQuizz(response) {
@@ -369,12 +422,6 @@ function sendQuizz(response) {
     const newQuizz = response;
     console.log(response);
     addToDataStorage(newQuizz);
-}
-
-function incorrectQuizz(error) {
-    console.log(error);
-    alert("Ocorreu um erro, tente novamente.");
-    location.reload();
 }
 
 function addToDataStorage(newQuizz) {
