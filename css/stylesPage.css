@@ -19,7 +19,7 @@
     margin-bottom: 24px;
 }
 
-.banner .img-background {
+.banner img {
     height: 142px;
     width: 100vw;
     object-fit: cover;

@@ -13,6 +13,7 @@ let quizzToEdit;
 let quizzToEditPosition;
 let quizzToEditId;
 let quizzToEditKey;
+let quizzToEditHTML;
 let userQuizzesIds = [];
 let serverQuizzesIds = [];
 let userQuizzesIdsNotInServer = [];
@@ -228,7 +229,14 @@ let banner;
 function renderBanner (element) {
     banner = element.innerHTML;
     document.querySelector(".quizz-page .banner").innerHTML = banner;
-    document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
+    console.log(document.querySelector(".quizz-page .banner"));
+    if (isEditing === true) {
+        document.querySelector(".quizz-page .banner img").src = document.querySelector(".success img").src;
+        document.querySelector(".quizz-page .banner .description").innerHTML = document.querySelector(".success .description").innerHTML;
+    }
+    if (document.querySelector(".quizz-page .buttons-holder") !== null) {
+        document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
+    }
 }
 
 let selectedQuizzId;

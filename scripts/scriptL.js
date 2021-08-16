@@ -17,7 +17,6 @@ return true;
 
 function editQuizz(selectedQuizz) {
     isEditing = true;
-    console.log("poops")
     quizzToEditId = Number(selectedQuizz.parentNode.parentNode.id);
     for (let i=0 ; i<userQuizzes.length ; i++) {
         if (quizzToEditId === userQuizzes[i].data.id) {
@@ -26,10 +25,6 @@ function editQuizz(selectedQuizz) {
             quizzToEditPosition = i;
         }
     }
-    console.log(quizzToEditId);
-    console.log(quizzToEditKey);
-    console.log(quizzToEdit);
-    console.log(selectedQuizz);
     fillBasicInformationToEdit(selectedQuizz, quizzToEdit);
 }
 function fillBasicInformationToEdit(selectedQuizz, quizzToEdit) {
@@ -38,18 +33,34 @@ function fillBasicInformationToEdit(selectedQuizz, quizzToEdit) {
     inputs[1].value = quizzToEdit.data.image;
     inputs[2].value = quizzToEdit.data.questions.length;
     inputs[3].value = quizzToEdit.data.levels.length;
-    printAmountOfQuestions(inputs);
-    fillQuestionsToEdit(quizzToEdit)
-    printAmountOfLevels(inputs);
-    fillLevelsToEdit(quizzToEdit)
     changePages(selectedQuizz);
 }
 function fillQuestionsToEdit(quizzToEdit) {
     for (i=0 ; i < quizzToEdit.data.questions.length ; i++) {
+        document.querySelectorAll(".input.question")[i].value = quizzToEdit.data.questions[i].title;
+        document.querySelectorAll(".input.background")[i].value = quizzToEdit.data.questions[i].color;
+        document.querySelectorAll(".input.correct.answer")[i].value = quizzToEdit.data.questions[0].answers[0].text;
+        document.querySelectorAll(".input.correct.image")[i].value = quizzToEdit.data.questions[0].answers[0].image;
+        document.querySelectorAll(".input.incorrect.answer.necessary")[i].value = quizzToEdit.data.questions[1].answers[1].text;
+        document.querySelectorAll(".input.incorrect.image.necessary")[i].value = quizzToEdit.data.questions[1].answers[1].image;
+        if (quizzToEdit.data.questions[i].answers.length > 2) {
+            document.querySelectorAll(".input.incorrect.answer.unnecessary.third")[i].value = quizzToEdit.data.questions[i].answers[2].text;
+            document.querySelectorAll(".input.incorrect.image.unnecessary.third")[i].value = quizzToEdit.data.questions[i].answers[2].image;
+        }
+        if (quizzToEdit.data.questions[i].answers.length > 3) {
+            document.querySelectorAll(".input.incorrect.answer.unnecessary.forth")[i].value = quizzToEdit.data.questions[i].answers[2].text;
+            document.querySelectorAll(".input.incorrect.image.unnecessary.forth")[i].value = quizzToEdit.data.questions[i].answers[2].image;
+        }
     }
 }
+function fillLevelsToEdit(quizzToEdit) {
+    for (i=0 ; i < quizzToEdit.data.levels.length ; i++) {
+        document.querySelectorAll(".levels .input.title ")[i].value = quizzToEdit.data.levels[i].title;
+        document.querySelectorAll(".levels .input.percentage ")[i].value = quizzToEdit.data.levels[i].minValue;
+        document.querySelectorAll(".levels .input.image ")[i].value = quizzToEdit.data.levels[i].image;
+        document.querySelectorAll(".levels .input.description ")[i].value = quizzToEdit.data.levels[i].text;
 
-function fillLevelsToEdit() {
+    }
 }
 
 function confirmInformation() {
@@ -84,6 +95,12 @@ function confirmInformation() {
     if (isEditing === false) {
         printAmountOfQuestions(inputs);
         printAmountOfLevels(inputs);
+    }
+    if (isEditing === true) {
+        printAmountOfQuestions(inputs);
+        fillQuestionsToEdit(quizzToEdit)
+        printAmountOfLevels(inputs);
+        fillLevelsToEdit(quizzToEdit)
     }
     printFinalScreen(inputs)
     document.querySelector(".basic-information").classList.add("hide");
@@ -372,7 +389,6 @@ function confirmLevels() {
     }
     if (isEditing === true) {
         confirmEdition();
-        isEditing = false;
     }
     document.querySelector(".levels").classList.add("hide");
     document.querySelector(".success").classList.remove("hide");
@@ -390,9 +406,15 @@ function quizzLevels() {
 }
 
 function visualizeQuizz (element) {
-    let lastCreatedQuizz = document.querySelector(".quizz-list .quizzes-container.my-quizzes").lastElementChild;
-    changePages(element);
+    let lastCreatedQuizz;
+    if (isEditing === true) {
+        lastCreatedQuizz = document.getElementById(quizzToEditId);
+    }
+    else {
+        lastCreatedQuizz = document.querySelector(".quizz-list .quizzes-container.my-quizzes").lastElementChild;
+    }
     renderBanner(lastCreatedQuizz);
+    changePages(element);
     getQuizz(lastCreatedQuizz);
 }
 
@@ -400,13 +422,14 @@ function confirmEdition() {
     const promise = axios.put(SERVER_URL_QUIZZES + `/${quizzToEditId}`,quizz,{headers:{ "Secret-Key": quizzToEditKey}});
     promise.then(sendEdition);
     promise.catch(function (error) {console.log(error)});;
-
 }
 
 function sendEdition(response) {
-    console.log(response);
     userQuizzes[quizzToEditPosition] = response;
     localStorage.setItem("list", JSON.stringify(userQuizzes));
+    console.log("Quizz editado com sucesso!");
+    loadPage();
+    
 }
 
 function createQuizz() {
@@ -419,7 +442,7 @@ function createQuizz() {
 function sendQuizz(response) {
     loadingPage.classList.add("hide");
     const newQuizz = response;
-    console.log(response);
+    console.log("Quizz criado com sucesso!");
     addToDataStorage(newQuizz);
 }
 
