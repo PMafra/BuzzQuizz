@@ -23,71 +23,6 @@ let quizz = {
     levels: []
 }
 
-function loadUserQuizzes() {
-    const storagedQuizzes = localStorage.getItem("list");
-    const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
-    if (userQuizzesForPrinting === null) {
-        return;
-    }
-    userQuizzes = userQuizzesForPrinting;
-
-    for (let i = 0; i < userQuizzes.length; i++) {
-        userQuizzesIds.push(userQuizzes[i].data.id);
-    }
-    console.log(userQuizzes);
-    console.log("Os Ids dos seus quizzes são: " + userQuizzesIds);
-    isMyQuizzStillInServer();
-}
-
-function isMyQuizzStillInServer () {
-
-    let allQuizzes = axios.get(SERVER_URL_QUIZZES);
-    loadingPage.classList.remove("hide");
-    allQuizzes.then(compareQuizzesToServer);
-    allQuizzes.catch(function (error) {console.log(error)});
-}
-
-function compareQuizzesToServer (response) {
-    loadingPage.classList.add("hide");
-    for (let i = 0; i < response.data.length; i++) {
-        serverQuizzesIds.push(response.data[i].id);
-    }
-
-    for (let i = 0; i < userQuizzesIds.length; i++) {
-        if (serverQuizzesIds.includes(userQuizzesIds[i])) {
-            continue;
-        } else {
-            console.log(userQuizzesIds[i] + " não está no servidor");
-            userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
-        }
-    }
-    console.log(userQuizzesIdsNotInServer);
-    renderUserQuizzes(userQuizzes);
-}
-
-function confirmDelete(selectedQuizz) {
-    quizzToDeleteId = Number(selectedQuizz.parentNode.parentNode.id);
-    for (let i=0 ; i<userQuizzes.length ; i++) {
-        if (quizzToDeleteId === userQuizzes[i].data.id) {
-            quizzToDeleteKey = userQuizzes[i].data.key;
-        }
-    }
-    if (confirm("Você realmente deseja remover o quizz selecionado?")) {
-        requireQuizzRemoval();
-    }
-}
-
-function requireQuizzRemoval() {
-    let promise = axios.delete(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`, {headers:{ "Secret-Key": quizzToDeleteKey}});
-    promise.then(deleteQuizz);
-    promise.catch(function (error) {console.log(error)});
-}
-
-function deleteQuizz(response) {
-    alert("Seu quizz foi deletado do nosso servidor com sucesso!")
-    location.reload();
-}
-
 function renderUserQuizzes (userQuizzes) {
     for (let i = 0; i < userQuizzes.length; i++) {
         if(userQuizzesIdsNotInServer.includes(userQuizzes[i].data.id)) {
@@ -122,26 +57,46 @@ function renderUserQuizzes (userQuizzes) {
     }
 }
 
-function startQuizzByEvent(e) {
-    if(e.path[0].classList.contains("description") || e.path[0].classList.contains("gradient-container")) {
-        let selectedQuizz = e.path[1];
-        startingQuizz (selectedQuizz);
+function compareQuizzesToServer (response) {
+    loadingPage.classList.add("hide");
+    for (let i = 0; i < response.data.length; i++) {
+        serverQuizzesIds.push(response.data[i].id);
     }
-    return;
+
+    for (let i = 0; i < userQuizzesIds.length; i++) {
+        if (serverQuizzesIds.includes(userQuizzesIds[i])) {
+            continue;
+        } else {
+            console.log(userQuizzesIds[i] + " não está no servidor");
+            userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
+        }
+    }
+    console.log(userQuizzesIdsNotInServer);
+    renderUserQuizzes(userQuizzes);
 }
 
-loadPage();
+function isMyQuizzStillInServer () {
 
-function loadPage () {
-    loadUserQuizzes();
-    getAllQuizzes();
-}
-
-function getAllQuizzes () {
     let allQuizzes = axios.get(SERVER_URL_QUIZZES);
     loadingPage.classList.remove("hide");
-    allQuizzes.then(renderAllQuizzes);
+    allQuizzes.then(compareQuizzesToServer);
     allQuizzes.catch(function (error) {console.log(error)});
+}
+
+function loadUserQuizzes() {
+    const storagedQuizzes = localStorage.getItem("list");
+    const userQuizzesForPrinting = JSON.parse(storagedQuizzes);
+    if (userQuizzesForPrinting === null) {
+        return;
+    }
+    userQuizzes = userQuizzesForPrinting;
+
+    for (let i = 0; i < userQuizzes.length; i++) {
+        userQuizzesIds.push(userQuizzes[i].data.id);
+    }
+    console.log(userQuizzes);
+    console.log("Os Ids dos seus quizzes são: " + userQuizzesIds);
+    isMyQuizzStillInServer();
 }
 
 function renderAllQuizzes (response) {
@@ -162,10 +117,42 @@ function renderAllQuizzes (response) {
         }
     }
 }
-function startingQuizz (element) {
-    getQuizz(element);
-    changePages(element);
-    renderBanner(element);
+
+function getAllQuizzes () {
+    let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+    loadingPage.classList.remove("hide");
+    allQuizzes.then(renderAllQuizzes);
+    allQuizzes.catch(function (error) {console.log(error)});
+}
+
+function loadPage () {
+    loadUserQuizzes();
+    getAllQuizzes();
+}
+
+loadPage();
+
+function deleteQuizz(response) {
+    alert("Seu quizz foi deletado do nosso servidor com sucesso!")
+    location.reload();
+}
+
+function requireQuizzRemoval() {
+    let promise = axios.delete(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`, {headers:{ "Secret-Key": quizzToDeleteKey}});
+    promise.then(deleteQuizz);
+    promise.catch(function (error) {console.log(error)});
+}
+
+function confirmDelete(selectedQuizz) {
+    quizzToDeleteId = Number(selectedQuizz.parentNode.parentNode.id);
+    for (let i=0 ; i<userQuizzes.length ; i++) {
+        if (quizzToDeleteId === userQuizzes[i].data.id) {
+            quizzToDeleteKey = userQuizzes[i].data.key;
+        }
+    }
+    if (confirm("Você realmente deseja remover o quizz selecionado?")) {
+        requireQuizzRemoval();
+    }
 }
 
 function changePages (element) {
@@ -189,6 +176,28 @@ function changePages (element) {
         main.classList.add("hide");
     }
     window.scrollTo(0,0);
+}
+
+let banner;
+
+function renderBanner (element) {
+    banner = element.innerHTML;
+    document.querySelector(".quizz-page .banner").innerHTML = banner;
+    document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
+}
+
+function startingQuizz (element) {
+    getQuizz(element);
+    changePages(element);
+    renderBanner(element);
+}
+
+function startQuizzByEvent(e) {
+    if(e.path[0].classList.contains("description") || e.path[0].classList.contains("gradient-container")) {
+        let selectedQuizz = e.path[1];
+        startingQuizz (selectedQuizz);
+    }
+    return;
 }
 
 const removeClass = (element, className) => {
@@ -223,13 +232,7 @@ function refreshPage () {
 
 // QUIZZ PAGE
 
-let banner;
 
-function renderBanner (element) {
-    banner = element.innerHTML;
-    document.querySelector(".quizz-page .banner").innerHTML = banner;
-    document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
-}
 
 let selectedQuizzId;
 

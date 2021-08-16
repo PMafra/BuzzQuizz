@@ -29,6 +29,7 @@ body {
     left: 0;
     z-index: 3;
 }
+
 .top-bar h1 {
     cursor: pointer;
 }
@@ -53,7 +54,7 @@ body {
 }
 
 .quizzes-container.all-quizzes {
-    padding-bottom: 80px;
+    padding-bottom: 50px;
 }
 
 .quizz-list 
@@ -62,8 +63,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: calc(100vw - 36px);
-    min-width: 340px;
-    max-width: 1051px;
+    width: 340px;
     height: 25px;
     margin: 35px 0 15px 0;
     padding-left: 5px;
@@ -99,8 +99,7 @@ body {
     margin-top: 20px;
     height: 181px;
     width: calc(100vw - 36px);
-    min-width: 340px;
-    max-width: 1051px;
+    width: 340px;
 }
 
 .quizz-list .quizzes-container 
@@ -132,7 +131,6 @@ body {
     position: relative;
     border-radius: 6px;
     cursor: pointer;
-    justify-content: flex-start;
 }
 
 .quizz-list .quizzes-container 
@@ -222,6 +220,7 @@ body {
     width: 100px;
     margin-left: 10px;
 }
+
 .quizz-list .buttons-holder {
     position: absolute;
     top: 9px;
@@ -238,6 +237,7 @@ body {
     color: #FFFFFF;
     cursor: default;
 }
+
 .quizz-list .buttons-holder ion-icon {
     cursor: pointer;
 }
@@ -255,6 +255,30 @@ body {
     .loading img {
         width: 70px;
         margin-top: 4px;
+    }
+}
+
+@media (min-width: 730px) {
+    .quizz-list .quizzes-container 
+    .quizz-create {
+        width: 700px;
+    }
+
+    .quizz-list 
+    .quizzes-title-box {
+        width: 700px;
+    }
+}
+
+@media (min-width: 1080px) {
+    .quizz-list .quizzes-container 
+    .quizz-create {
+        width: 1050px;
+    }
+
+    .quizz-list 
+    .quizzes-title-box {
+        width: 1050px;
     }
 }
 
