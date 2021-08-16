@@ -224,6 +224,11 @@ function confirmQuestions() {
             }
         }
     }
+    // for(i = 0 ; i < questions.length ; i ++) {
+    //     if (questions[i].getElementsByClassName("error")) {
+    //         questions[i].classList.add("error-background");
+    //     }
+    // }
     for(i = 0 ; i < questionInputs.length ; i ++) {
         if (questionInputs[i].classList.contains("error-background")) {
             return;

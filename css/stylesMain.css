@@ -129,11 +129,6 @@ body {
     cursor: pointer;
 }
 
-/* .quizz-list .quizzes-container 
-.quizz-box:not(:last-child) {
-    margin-bottom: 13px;
-} */
-
 .quizz-list .quizzes-container 
 .img-background {
     border-radius: 6px;
@@ -221,7 +216,7 @@ body {
     width: 100px;
     margin-left: 10px;
 }
-.buttons-holder {
+.quizz-list .buttons-holder {
     position: absolute;
     top: 9px;
     right: 0;
@@ -234,8 +229,11 @@ body {
     justify-content: space-around;
     align-items: center;
     font-size: 22px;
-    color: #FFFFFF;;
-
+    color: #FFFFFF;
+    cursor: default;
+}
+.quizz-list .buttons-holder ion-icon {
+    cursor: pointer;
 }
 
 @media (max-width: 450px) {

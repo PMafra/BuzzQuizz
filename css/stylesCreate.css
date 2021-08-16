@@ -126,7 +126,10 @@
     color: #EC362D;
     margin-bottom: 8px;
 }
-.error-background {
+.input.error-background {
+    background: #FFE9E9;
+}
+.closed.error-background {
     background: #FFE9E9;
 }
 @media (max-width: 1100px) {

@@ -133,11 +133,13 @@
     color: #ffffff;
     margin-bottom: 8px;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 .quizz-page .home-button {
     background-color: #FAFAFA;
     color: #818181;
+    cursor: pointer;
 }
 
 .blurred-background {
@@ -185,6 +187,7 @@
     
     .answer-option {
         margin-top: 20px;
+        cursor: pointer;
     }
     
     .answer-option img {
