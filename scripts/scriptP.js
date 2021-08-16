@@ -13,9 +13,16 @@ let quizzToEdit;
 let quizzToEditPosition;
 let quizzToEditId;
 let quizzToEditKey;
+let quizzToEditHTML;
 let userQuizzesIds = [];
 let serverQuizzesIds = [];
 let userQuizzesIdsNotInServer = [];
+let banner;
+let selectedQuizzId;
+let questionsAnswered = 0;
+let totalQuestions = 0;
+let siblings;
+let numOfHits = 0;
 let quizz = {
 	title: "",
 	image: "",
@@ -71,7 +78,6 @@ function compareQuizzesToServer (response) {
             userQuizzesIdsNotInServer.push(userQuizzesIds[i]);
         }
     }
-    console.log(userQuizzesIdsNotInServer);
     renderUserQuizzes(userQuizzes);
 }
 
@@ -94,14 +100,12 @@ function loadUserQuizzes() {
     for (let i = 0; i < userQuizzes.length; i++) {
         userQuizzesIds.push(userQuizzes[i].data.id);
     }
-    console.log(userQuizzes);
     console.log("Os Ids dos seus quizzes são: " + userQuizzesIds);
     isMyQuizzStillInServer();
 }
 
 function renderAllQuizzes (response) {
     loadingPage.classList.add("hide");
-    console.log(response);
     for (let i = 0; i < response.data.length; i++) {
         if (userQuizzesIds.includes(response.data[i].id)) {
             continue;
@@ -132,130 +136,27 @@ function loadPage () {
 
 loadPage();
 
-function deleteQuizz(response) {
-    alert("Seu quizz foi deletado do nosso servidor com sucesso!")
-    location.reload();
-}
-
-function requireQuizzRemoval() {
-    let promise = axios.delete(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`, {headers:{ "Secret-Key": quizzToDeleteKey}});
-    promise.then(deleteQuizz);
-    promise.catch(function (error) {console.log(error)});
-}
-
-function confirmDelete(selectedQuizz) {
-    quizzToDeleteId = Number(selectedQuizz.parentNode.parentNode.id);
-    for (let i=0 ; i<userQuizzes.length ; i++) {
-        if (quizzToDeleteId === userQuizzes[i].data.id) {
-            quizzToDeleteKey = userQuizzes[i].data.key;
-        }
+const shuffleDivs = parent => {
+    let divs = parent.children;
+    let frag = document.createDocumentFragment();
+    while (divs.length) {
+        frag.appendChild(divs[Math.floor(Math.random() * divs.length)]);
     }
-    if (confirm("Você realmente deseja remover o quizz selecionado?")) {
-        requireQuizzRemoval();
-    }
+    parent.appendChild(frag);
 }
 
-function changePages (element) {
-    if (element.classList.contains("quizz-box")) {
-        main.classList.add("hide");
-        page.classList.remove("hide");
-    }
-    if (element.parentElement.classList.contains("quizz-create") || element.id === "add-icon") {
-        main.classList.add("hide");
-        creation.classList.remove("hide");
-    }
-    if (element.classList.contains("restart-button")) {
-        restartingQuizz();
-    }
-    if (element.classList.contains("test-created")) {
-        page.classList.remove("hide");
-        creation.classList.add("hide");
-    }
-    if (element.classList.contains("edit")) {
-        creation.classList.remove("hide");
-        main.classList.add("hide");
-    }
-    window.scrollTo(0,0);
+function isTooLightYIQ(hexcolor){
+    let r = parseInt(hexcolor.substr(0,2),16);
+    let g = parseInt(hexcolor.substr(2,2),16);
+    let b = parseInt(hexcolor.substr(4,2),16);
+    let yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return yiq >= 128;
 }
-
-let banner;
-
-function renderBanner (element) {
-    banner = element.innerHTML;
-    document.querySelector(".quizz-page .banner").innerHTML = banner;
-    document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
-}
-
-function startingQuizz (element) {
-    getQuizz(element);
-    changePages(element);
-    renderBanner(element);
-}
-
-function startQuizzByEvent(e) {
-    if(e.path[0].classList.contains("description") || e.path[0].classList.contains("gradient-container")) {
-        let selectedQuizz = e.path[1];
-        startingQuizz (selectedQuizz);
-    }
-    return;
-}
-
-const removeClass = (element, className) => {
-    if (element.classList.contains(className)){
-        element.classList.remove(className);
-    }
-}
-
-const restartingQuizz = () => {
-    let resetingAnswersAndResult = document.querySelectorAll(".reset, .color-green, .color-red, .blurred-background, .answers-box");
-
-    resetingAnswersAndResult.forEach(element => {
-        if (element.classList.contains("reset")) {
-            element.remove();
-        }
-        if (element.classList.contains("answers-box")) {
-            shuffleDivs(element);
-        }
-        removeClass(element, "color-green");
-        removeClass(element, "color-red");
-        removeClass(element, "blurred-background");
-    });
-
-    questionsAnswered = totalQuestions;
-    numOfHits = 0;
-
-}
-
-function refreshPage () {
-    location.reload();
-}
-
-// QUIZZ PAGE
-
-
-
-let selectedQuizzId;
-
-function getQuizz (element) {
-
-    selectedQuizzId = Number(element.id);
-    console.log(element.id);
-
-    let allQuizzes = axios.get(SERVER_URL_QUIZZES);
-    loadingPage.classList.remove("hide");
-    allQuizzes.then(renderQuizzQuestions);
-    allQuizzes.catch(function (error) {console.log(error)});
-}
-
-let questionsAnswered = 0;
-let totalQuestions = 0;
 
 function renderQuizzQuestions (response) {
     loadingPage.classList.add("hide");
-    console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
         if (selectedQuizzId === response.data[i].id) {
-            console.log(response.data[i].levels);
             for (let j = 0; j < response.data[i].questions.length; j++) {
 
                 let questionBoxColor = response.data[i].questions[j].color;
@@ -298,83 +199,114 @@ function renderQuizzQuestions (response) {
     }
 }
 
-function isTooLightYIQ(hexcolor){
-    let r = parseInt(hexcolor.substr(0,2),16);
-    let g = parseInt(hexcolor.substr(2,2),16);
-    let b = parseInt(hexcolor.substr(4,2),16);
-    let yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return yiq >= 128;
+function getQuizz (element) {
+    selectedQuizzId = Number(element.id);
+    let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+    loadingPage.classList.remove("hide");
+    allQuizzes.then(renderQuizzQuestions);
+    allQuizzes.catch(function (error) {console.log(error)});
 }
 
-const shuffleDivs = parent => {
-    let divs = parent.children;
-    let frag = document.createDocumentFragment();
-    while (divs.length) {
-        frag.appendChild(divs[Math.floor(Math.random() * divs.length)]);
+function changePages (element) {
+    if (element.classList.contains("quizz-box")) {
+        main.classList.add("hide");
+        page.classList.remove("hide");
     }
-    parent.appendChild(frag);
+    if (element.parentElement.classList.contains("quizz-create") || element.id === "add-icon") {
+        main.classList.add("hide");
+        creation.classList.remove("hide");
+    }
+    if (element.classList.contains("restart-button")) {
+        restartingQuizz();
+    }
+    if (element.classList.contains("test-created")) {
+        page.classList.remove("hide");
+        creation.classList.add("hide");
+    }
+    if (element.classList.contains("edit")) {
+        creation.classList.remove("hide");
+        main.classList.add("hide");
+    }
+    window.scrollTo(0,0);
 }
 
-let siblings;
-let numOfHits = 0;
-function getSiblings (element) {
+function renderBanner (element) {
+    banner = element.innerHTML;
+    document.querySelector(".quizz-page .banner").innerHTML = banner;
+    if (isEditing === true) {
+        document.querySelector(".quizz-page .banner img").src = document.querySelector(".success img").src;
+        document.querySelector(".quizz-page .banner .description").innerHTML = document.querySelector(".success .description").innerHTML;
+    }
+    if (document.querySelector(".quizz-page .buttons-holder") !== null) {
+        document.querySelector(".quizz-page .buttons-holder").classList.add("hide");
+    }
+}
 
-    siblings = [];
-    let sibling  = element.parentNode.firstChild;
-    while (sibling) {
-        if (sibling.nodeType === 1 && sibling !== element) {
-            siblings.push(sibling);
+function startingQuizz (element) {
+    getQuizz(element);
+    changePages(element);
+    renderBanner(element);
+}
+
+function deleteQuizz(response) {
+    alert("Seu quizz foi deletado do nosso servidor com sucesso!")
+    location.reload();
+}
+
+function requireQuizzRemoval() {
+    let promise = axios.delete(SERVER_URL_QUIZZES + `/${quizzToDeleteId}`, {headers:{ "Secret-Key": quizzToDeleteKey}});
+    promise.then(deleteQuizz);
+    promise.catch(function (error) {console.log(error)});
+}
+
+function confirmDelete(selectedQuizz) {
+    quizzToDeleteId = Number(selectedQuizz.parentNode.parentNode.id);
+    for (let i=0 ; i<userQuizzes.length ; i++) {
+        if (quizzToDeleteId === userQuizzes[i].data.id) {
+            quizzToDeleteKey = userQuizzes[i].data.key;
         }
-        sibling = sibling.nextSibling;
     }
-    return siblings;
-};
-
-function selectOption (element) {
-    if (element.lastElementChild.classList.contains("color-green") || element.lastElementChild.classList.contains("color-red")) {
-        return;
+    if (confirm("Você realmente deseja remover o quizz selecionado?")) {
+        requireQuizzRemoval();
     }
+}
 
-    getSiblings(element);
+function startQuizzByEvent(e) {
+    if(e.path[0].classList.contains("description") || e.path[0].classList.contains("gradient-container")) {
+        let selectedQuizz = e.path[1];
+        startingQuizz(selectedQuizz);
+    }
+    return;
+}
 
-    for (let i = 0; i < siblings.length; i++) {
-        siblings[i].classList.add("blurred-background");
-        if (siblings[i].id === "true") {
-            siblings[i].lastElementChild.classList.add("color-green");
-        } else {
-            siblings[i].lastElementChild.classList.add("color-red");
+const removeClass = (element, className) => {
+    if (element.classList.contains(className)){
+        element.classList.remove(className);
+    }
+}
+
+const restartingQuizz = () => {
+    let resetingAnswersAndResult = document.querySelectorAll(".reset, .color-green, .color-red, .blurred-background, .answers-box");
+
+    resetingAnswersAndResult.forEach(element => {
+        if (element.classList.contains("reset")) {
+            element.remove();
         }
-    }
+        if (element.classList.contains("answers-box")) {
+            shuffleDivs(element);
+        }
+        removeClass(element, "color-green");
+        removeClass(element, "color-red");
+        removeClass(element, "blurred-background");
+    });
 
-    if (element.id === "true") {
-        element.lastElementChild.classList.add("color-green");
-        numOfHits++;
-    } else {
-        element.lastElementChild.classList.add("color-red");
-    }
-
-    questionsAnswered--;
-
-    console.log(numOfHits);
-
-    isFinished(questionsAnswered);
-
-    setTimeout(scrollToNext, 2000, element);
+    questionsAnswered = totalQuestions;
+    numOfHits = 0;
 
 }
 
-function isFinished (remainingQuestions) {
-
-    console.log(remainingQuestions);
-
-    if (remainingQuestions === 0) {
-
-        let allQuizzes = axios.get(SERVER_URL_QUIZZES);
-        loadingPage.classList.remove("hide");
-        allQuizzes.then(renderResult);
-        allQuizzes.catch(function (error) {console.log(error)});
-    }
-
+function refreshPage () {
+    location.reload();
 }
 
 function renderResult(response) {
@@ -413,9 +345,18 @@ function renderResult(response) {
                         <button class="home-button reset" onclick="refreshPage()">Voltar para home</button>`;
                 }
             }
-            console.log(result);
             page.innerHTML += result;
         }
+    }
+}
+
+function isFinished (remainingQuestions) {
+
+    if (remainingQuestions === 0) {
+        let allQuizzes = axios.get(SERVER_URL_QUIZZES);
+        loadingPage.classList.remove("hide");
+        allQuizzes.then(renderResult);
+        allQuizzes.catch(function (error) {console.log(error)});
     }
 }
 
@@ -435,4 +376,43 @@ function scrollToNext (element) {
             inline: 'center'
         });
     }
+}
+
+function getSiblings (element) {
+    siblings = [];
+    let sibling  = element.parentNode.firstChild;
+    while (sibling) {
+        if (sibling.nodeType === 1 && sibling !== element) {
+            siblings.push(sibling);
+        }
+        sibling = sibling.nextSibling;
+    }
+    return siblings;
+}
+
+function selectOption (element) {
+    if (element.lastElementChild.classList.contains("color-green") || element.lastElementChild.classList.contains("color-red")) {
+        return;
+    }
+    getSiblings(element);
+
+    for (let i = 0; i < siblings.length; i++) {
+        siblings[i].classList.add("blurred-background");
+        if (siblings[i].id === "true") {
+            siblings[i].lastElementChild.classList.add("color-green");
+        } else {
+            siblings[i].lastElementChild.classList.add("color-red");
+        }
+    }
+
+    if (element.id === "true") {
+        element.lastElementChild.classList.add("color-green");
+        numOfHits++;
+    } else {
+        element.lastElementChild.classList.add("color-red");
+    }
+
+    questionsAnswered--;
+    isFinished(questionsAnswered);
+    setTimeout(scrollToNext, 2000, element);
 }
